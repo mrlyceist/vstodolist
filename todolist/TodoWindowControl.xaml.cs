@@ -41,7 +41,11 @@ namespace todolist
 
         internal void CheckForErrors()
         {
-            throw new NotImplementedException();
+            foreach (TodoItem item in listBox.Items)
+            {
+                if (item.DueDate < DateTime.Now)
+                    ReportError($"ToDo Item is out of date: {item.ToString()}");
+            }
         }
 
         /// <summary>
@@ -57,6 +61,13 @@ namespace todolist
             {
                 var item = new TodoItem(this, textBox.Text);
                 listBox.Items.Add(item);
+
+                var outputWindow = parent.GetVsService(typeof (SVsOutputWindow)) as IVsOutputWindow;
+                IVsOutputWindowPane pane;
+                Guid guidGeneralPane = VSConstants.GUID_OutWindowGeneralPane;
+                outputWindow.GetPane(ref guidGeneralPane, out pane);
+                pane?.OutputString($"ToDo Item created: {item.ToString()}\r'n");
+                
                 TrackSelection();
                 CheckForErrors();
             }
@@ -102,6 +113,51 @@ namespace todolist
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TrackSelection();
+        }
+
+        private TodoWindowTaskProvider taskProvider;
+
+        private void CreateProvider()
+        {
+            if (taskProvider==null)
+            {
+                taskProvider=new TodoWindowTaskProvider(parent);
+                taskProvider.ProviderName = "To Do";
+            }
+        }
+
+        private void ClearError()
+        {
+            CreateProvider();
+            taskProvider.Tasks.Clear();
+        }
+
+        private void ReportError(string p)
+        {
+            CreateProvider();
+            var errorTask = new Task();
+            errorTask.CanDelete = false;
+            errorTask.Category = TaskCategory.Comments;
+            errorTask.Text = p;
+
+            taskProvider.Tasks.Add(errorTask);
+            taskProvider.Show();
+
+            var taskList = parent.GetVsService(typeof (SVsTaskList)) as IVsTaskList2;
+            if(taskList==null)
+                return;
+
+            var guidProvider = typeof (TodoWindowTaskProvider).GUID;
+            taskList.SetActiveProvider(ref guidProvider);
+        }
+
+        [Guid("72de1eAD-a00c-4f57-bff7-57edb162d0be")]
+        public class TodoWindowTaskProvider : TaskProvider
+        {
+            public TodoWindowTaskProvider(IServiceProvider sp)
+                : base(sp)
+            {
+            } 
         }
     }
 }
