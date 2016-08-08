@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -44,7 +45,7 @@ namespace todolist
     [Guid(TodoWindowPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideOptionPage(typeof(ToolsOptions), "ToDo", "General", 101, 106, true)]
-    public sealed class TodoWindowPackage : Package
+    public sealed class TodoWindowPackage : Package//, IVsSolutionEvents
     {
         /// <summary>
         /// TodoWindowPackage GUID string.
@@ -64,6 +65,61 @@ namespace todolist
 
         public static DTE dte { get; private set; }
 
+        //#region Interface Implementation
+        //public int OnAfterCloseSolution(object pUnkReserved)
+        //{
+        //    TodoWindowControl.PrepareListOnClose();
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
+        //{
+        //    TodoWindowControl.PrepareListOnOpen();
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnBeforeCloseSolution(object pUnkReserved)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
+        //{
+        //    return VSConstants.S_OK;
+        //}
+
+        //#endregion
+        
         #region Package Members
 
         /// <summary>
@@ -75,7 +131,13 @@ namespace todolist
             TodoWindowCommand.Initialize(this);
             dte = (DTE) GetService(typeof (DTE));
             base.Initialize();
+
+            theSolution = GetService(typeof(SVsSolution)) as IVsSolution;
+            //uint cookie = 0;
+            //solution.AdviseSolutionEvents(this, out cookie);
         }
+
+        public static IVsSolution theSolution { get; set; }
 
         #endregion
     }

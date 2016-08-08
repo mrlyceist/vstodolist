@@ -26,7 +26,8 @@ namespace todolist
     /// <summary>
     /// Interaction logic for TodoWindowControl.
     /// </summary>
-    public partial class TodoWindowControl : UserControl
+    [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string)]
+    public partial class TodoWindowControl : UserControl, IVsSolutionEvents
     {
         public TodoWindow parent;
         private Solution solution;
@@ -42,33 +43,22 @@ namespace todolist
             this.InitializeComponent();
             parent = window;
 
-            CheckFile();
-            AdviseSolutionEvents();
+            uint cookie = 0;
+            TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
+            GetSolution();
         }
 
-        private void AdviseSolutionEvents()
+        private void GetSolution()
         {
-            var _solution = Package.GetGlobalService(typeof (SVsSolution)) as IVsSolutionEvents;
-            //if(_solution!=null)
-            //    _solution.
-            _solution.OnAfterOpenSolution(null, 0);
-
-        }
-
-        private void CheckFile()
-        {
-            DTE2 dte = Package.GetGlobalService(typeof(SDTE)) as DTE2;
+            DTE2 dte = Package.GetGlobalService(typeof (SDTE)) as DTE2;
             solution = dte.Solution;
             if (solution.FullName != string.Empty)
             {
                 string solutionDir = System.IO.Path.GetDirectoryName(solution.FullName);
                 listFile = Path.Combine(solutionDir, "TaskList.xml");
-                buttonAdd.IsEnabled = true;
             }
             else
-            {
                 buttonAdd.IsEnabled = false;
-            }
         }
 
         internal void UpdateList(TodoItem item)
@@ -106,8 +96,7 @@ namespace todolist
                 Guid guidGeneralPane = VSConstants.GUID_OutWindowGeneralPane;
                 outputWindow.GetPane(ref guidGeneralPane, out pane);
                 pane?.OutputString($"ToDo Item created: {item.ToString()}\r'n");
-
-                TryCreate(listFile);
+                
                 
                 TrackSelection();
                 CheckForErrors();
@@ -265,7 +254,6 @@ namespace todolist
             if (solution.FullName != string.Empty)
             {
                 string solutionDir = System.IO.Path.GetDirectoryName(solution.FullName);
-                //MessageBox.Show(solutionDir);
                 var listFile = Path.Combine(solutionDir, "TaskList.xml");
                 TryCreate(listFile);
             }
@@ -273,8 +261,6 @@ namespace todolist
             {
                 MessageBox.Show("WAT");
             }
-            
-
         }
 
         private void TryCreate(string listFile)
@@ -286,5 +272,76 @@ namespace todolist
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
+
+        #region Interface Implementation
+        /// <summary>
+        /// Notifies listening clients that the solution has been opened.
+        /// </summary>
+        /// <param name="pUnkReserved">[in] Reserved for future use.</param><param name="fNewSolution">[in] true if the solution is being created. false if the solution was created previously or is being loaded.</param>
+        /// <returns>
+        /// If the method succeeds, it returns <see cref="F:Microsoft.VisualStudio.VSConstants.S_OK"/>. If it fails, it returns an error code.
+        /// </returns>
+        public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
+        {
+            this.buttonAdd.IsEnabled = true;
+            GetSolution();
+            TryCreate(listFile);
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// Notifies listening clients that a solution has been closed.
+        /// </summary>
+        /// <param name="pUnkReserved">[in] Reserved for future use.</param>
+        /// <returns>
+        /// If the method succeeds, it returns <see cref="F:Microsoft.VisualStudio.VSConstants.S_OK"/>. If it fails, it returns an error code.
+        /// </returns>
+        public int OnAfterCloseSolution(object pUnkReserved)
+        {
+            buttonAdd.IsEnabled = false;
+            this.listBox.Items.Clear();
+            return VSConstants.S_OK;
+        }
+
+        public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
+        {
+            return VSConstants.S_OK;
+        }
+
+        public int OnBeforeCloseSolution(object pUnkReserved)
+        {
+            return VSConstants.S_OK;
+        }
+        #endregion
     }
 }
