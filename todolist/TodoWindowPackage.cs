@@ -15,6 +15,8 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
+using EnvDTE;
+using EnvDTE80;
 
 namespace todolist
 {
@@ -60,6 +62,8 @@ namespace todolist
             // initialization is the Initialize method.
         }
 
+        public static DTE dte { get; private set; }
+
         #region Package Members
 
         /// <summary>
@@ -69,6 +73,7 @@ namespace todolist
         protected override void Initialize()
         {
             TodoWindowCommand.Initialize(this);
+            dte = (DTE) GetService(typeof (DTE));
             base.Initialize();
         }
 

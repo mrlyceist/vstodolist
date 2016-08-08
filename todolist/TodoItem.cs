@@ -39,6 +39,20 @@ namespace todolist
             }
         }
 
+        private bool finished;
+        [Description("Finished state of ToDo item")]
+        [Category("ToDo Fields")]
+        public bool Finished
+        {
+            get { return finished; }
+            set
+            {
+                finished = value;
+                parent.UpdateList(this);
+            }
+        }
+
+
         public TodoItem(TodoWindowControl control, string itemName)
         {
             parent = control;
@@ -57,11 +71,12 @@ namespace todolist
                     daysAhead = options.DaysAhead;
             }
             dueDate = dueDate.AddDays(daysAhead);
+            finished = false;
         }
 
         public override string ToString()
         {
-            return $"{name} Due: {dueDate.ToShortDateString()}";
+            return $"{name} Finished: {finished}";
         }
     }
 }
