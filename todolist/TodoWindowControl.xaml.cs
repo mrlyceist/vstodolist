@@ -43,6 +43,16 @@ namespace todolist
             parent = window;
 
             CheckFile();
+            AdviseSolutionEvents();
+        }
+
+        private void AdviseSolutionEvents()
+        {
+            var _solution = Package.GetGlobalService(typeof (SVsSolution)) as IVsSolutionEvents;
+            //if(_solution!=null)
+            //    _solution.
+            _solution.OnAfterOpenSolution(null, 0);
+
         }
 
         private void CheckFile()
