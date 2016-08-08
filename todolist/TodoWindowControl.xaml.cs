@@ -11,6 +11,7 @@ using EnvDTE;
 using EnvDTE80;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
+using System.Xml.Linq;
 
 namespace todolist
 {
@@ -26,12 +27,14 @@ namespace todolist
     /// <summary>
     /// Interaction logic for TodoWindowControl.
     /// </summary>
-    [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string)]
     public partial class TodoWindowControl : UserControl, IVsSolutionEvents
     {
+        private TodoWindowTaskProvider taskProvider;
         public TodoWindow parent;
         private Solution solution;
         private string listFile;
+        private XDocument xTaskList;
+        private XElement XTasks;
 
         public List<TodoItem> TaskList = new List<TodoItem>();
 
@@ -205,7 +208,6 @@ namespace todolist
             TrackSelection();
         }
 
-        private TodoWindowTaskProvider taskProvider;
 
         private void CreateProvider()
         {
@@ -265,12 +267,31 @@ namespace todolist
 
         private void TryCreate(string listFile)
         {
-            if (File.Exists(listFile)) return;
-            try
+            if (!File.Exists(listFile))
             {
-                File.Create(listFile);
+                try
+                {
+                    //using (FileStream fs = File.Create(listFile))
+                    //{
+                    //    xTaskList = new XDocument();
+                    //    xTaskList.Save(listFile);
+                    //}
+                    FileStream fs = File.Create(listFile);
+                    fs.Close();
+                    xTaskList = new XDocument();
+                    XTasks=new XElement("Tasks");
+                    xTaskList.Add(XTasks);
+                    xTaskList.Save(listFile);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            else
+            {
+                //OpenTaskListFromFile();
+            }
         }
 
         #region Interface Implementation
