@@ -34,7 +34,8 @@ namespace todolist
         private Solution solution;
         private string listFile;
         private XDocument xTaskList;
-        private XElement XTasks;
+        private XElement xTasks;
+        private TodoWindowControl fakeControl;
 
         public List<TodoItem> TaskList = new List<TodoItem>();
 
@@ -45,6 +46,7 @@ namespace todolist
         {
             this.InitializeComponent();
             parent = window;
+            fakeControl = this;
 
             uint cookie = 0;
             TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
@@ -89,9 +91,10 @@ namespace todolist
         {
             if (textBox.Text.Length > 0)
             {
-                var item = new TodoItem(this, textBox.Text);
+                var item = new TodoItem(/*this,*/ textBox.Text);
                 
                 AddItemToList(item);
+                AddItemToFile(item);
                 TaskList.Add(item);
 
                 var outputWindow = parent.GetVsService(typeof (SVsOutputWindow)) as IVsOutputWindow;
@@ -100,10 +103,21 @@ namespace todolist
                 outputWindow.GetPane(ref guidGeneralPane, out pane);
                 pane?.OutputString($"ToDo Item created: {item.ToString()}\r'n");
                 
-                
+                BuildList();
                 TrackSelection();
                 CheckForErrors();
             }
+        }
+
+        private void AddItemToFile(TodoItem item)
+        {
+            XElement xItem = new XElement("item", item.Name);
+            //XElement xTask = new XElement("task");
+            XElement xDone = new XElement("finished", item.Finished.ToString().ToLower());
+            xItem.Add(xDone);
+            //xTasks.Add(xItem);
+            //try { xTaskList.Save(listFile); }
+            //catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void RemoveEvent(object sender, RoutedEventArgs e)
@@ -122,6 +136,8 @@ namespace todolist
             {
                 AddItemToList(item);
             }
+            try { xTaskList.Save(listFile); }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void AddItemToList(TodoItem item)
@@ -271,16 +287,11 @@ namespace todolist
             {
                 try
                 {
-                    //using (FileStream fs = File.Create(listFile))
-                    //{
-                    //    xTaskList = new XDocument();
-                    //    xTaskList.Save(listFile);
-                    //}
                     FileStream fs = File.Create(listFile);
                     fs.Close();
                     xTaskList = new XDocument();
-                    XTasks=new XElement("Tasks");
-                    xTaskList.Add(XTasks);
+                    xTasks=new XElement("Tasks");
+                    xTaskList.Add(xTasks);
                     xTaskList.Save(listFile);
                 }
                 catch (Exception ex)
@@ -290,8 +301,27 @@ namespace todolist
             }
             else
             {
-                //OpenTaskListFromFile();
+                OpenTaskListFromFile();
             }
+        }
+
+        private void OpenTaskListFromFile()
+        {
+            TaskList = new List<TodoItem>();
+            //try
+            //{
+                xTaskList = XDocument.Load(listFile);
+                foreach (XElement element in xTaskList.Element("Tasks").Elements("item"))
+                {
+                    TodoItem item = new TodoItem(/*fakeControl,*/ element.Value)
+                    {
+                        Finished = bool.Parse(element.Element("done").Value)
+                    };
+                    TaskList.Add(item);
+                }
+            //}
+            //catch (Exception ex) { MessageBox.Show(ex.Message);}
+            BuildList();
         }
 
         #region Interface Implementation

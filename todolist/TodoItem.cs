@@ -25,19 +25,19 @@ namespace todolist
             }
         }
 
-        private DateTime dueDate;
-        [Description("Due date of the ToDo item")]
-        [Category("ToDo Fields")]
-        public DateTime DueDate
-        {
-            get { return dueDate; }
-            set
-            {
-                dueDate = value;
-                parent.UpdateList(this);
-                parent.CheckForErrors();
-            }
-        }
+        //private DateTime dueDate;
+        //[Description("Due date of the ToDo item")]
+        //[Category("ToDo Fields")]
+        //public DateTime DueDate
+        //{
+        //    get { return dueDate; }
+        //    set
+        //    {
+        //        dueDate = value;
+        //        parent.UpdateList(this);
+        //        parent.CheckForErrors();
+        //    }
+        //}
 
         private bool finished;
         [Description("Finished state of ToDo item")]
@@ -53,24 +53,24 @@ namespace todolist
         }
 
 
-        public TodoItem(TodoWindowControl control, string itemName)
+        public TodoItem(/*TodoWindowControl control, */string itemName)
         {
-            parent = control;
+            //parent = control;
             name = itemName;
-            dueDate = DateTime.Now;
+            //dueDate = DateTime.Now;
 
-            double daysAhead = 0;
-            IVsPackage package = parent.parent.Package as IVsPackage;
-            if (package != null)
-            {
-                object obj;
-                package.GetAutomationObject("ToDo.General", out obj);
+            //double daysAhead = 0;
+            //IVsPackage package = parent.parent.Package as IVsPackage;
+            //if (package != null)
+            //{
+            //    object obj;
+            //    package.GetAutomationObject("ToDo.General", out obj);
 
-                ToolsOptions options = obj as ToolsOptions;
-                if (options != null)
-                    daysAhead = options.DaysAhead;
-            }
-            dueDate = dueDate.AddDays(daysAhead);
+            //    ToolsOptions options = obj as ToolsOptions;
+            //    if (options != null)
+            //        daysAhead = options.DaysAhead;
+            //}
+            //dueDate = dueDate.AddDays(daysAhead);
             finished = false;
         }
 
