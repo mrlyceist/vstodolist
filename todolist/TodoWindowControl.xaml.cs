@@ -94,6 +94,9 @@ namespace todolist
             {
                 var item = new TodoItem(/*this,*/ textBox.Text);
                 
+                if (!File.Exists(listFile))
+                    TryCreate(listFile);
+
                 AddItemToList(item);
                 AddItemToFile(item);
                 TaskList.Add(item);
@@ -269,21 +272,7 @@ namespace todolist
             {
             } 
         }
-
-        private void button1_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (solution.FullName != string.Empty)
-            {
-                string solutionDir = System.IO.Path.GetDirectoryName(solution.FullName);
-                var listFile = Path.Combine(solutionDir, "TaskList.xml");
-                TryCreate(listFile);
-            }
-            else
-            {
-                MessageBox.Show("WAT");
-            }
-        }
-
+        
         private void TryCreate(string listFile)
         {
             if (!File.Exists(listFile))
@@ -333,7 +322,9 @@ namespace todolist
         {
             this.buttonAdd.IsEnabled = true;
             GetSolution();
-            TryCreate(listFile);
+            if (File.Exists(listFile))
+                OpenTaskListFromFile();
+            //TryCreate(listFile);
             return VSConstants.S_OK;
         }
 

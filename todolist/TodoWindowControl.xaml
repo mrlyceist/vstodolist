@@ -14,6 +14,5 @@
             <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" Margin="236,13,0,0" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click"/>
             <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" Margin="10,56,0,0" VerticalAlignment="Top" Width="274" SelectionChanged="listBox_SelectionChanged"/>  
         </Canvas>
-        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="149,34,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click_1"/>
     </Grid>
 </UserControl>
