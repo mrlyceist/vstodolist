@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using EnvDTE;
@@ -35,7 +36,7 @@ namespace todolist
         private string listFile;
         private XDocument xTaskList;
         private XElement xTasks;
-        private TodoWindowControl fakeControl;
+        //private TodoWindowControl fakeControl;
 
         public List<TodoItem> TaskList = new List<TodoItem>();
 
@@ -46,7 +47,7 @@ namespace todolist
         {
             this.InitializeComponent();
             parent = window;
-            fakeControl = this;
+            //fakeControl = this;
 
             uint cookie = 0;
             TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
@@ -111,13 +112,13 @@ namespace todolist
 
         private void AddItemToFile(TodoItem item)
         {
-            XElement xItem = new XElement("item", item.Name);
-            //XElement xTask = new XElement("task");
+            XElement xItem = new XElement("item");
+            XElement xText = new XElement("text", item.Name);
             XElement xDone = new XElement("finished", item.Finished.ToString().ToLower());
-            xItem.Add(xDone);
-            //xTasks.Add(xItem);
-            //try { xTaskList.Save(listFile); }
-            //catch (Exception ex) { MessageBox.Show(ex.Message); }
+            xItem.Add(xText, xDone);
+            xTasks.Add(xItem);
+            try { xTaskList.Save(listFile); }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void RemoveEvent(object sender, RoutedEventArgs e)
@@ -132,9 +133,11 @@ namespace todolist
         private void BuildList()
         {
             listBox.Items.Clear();
+            xTaskList.Root.RemoveAll();
             foreach (TodoItem item in TaskList)
             {
                 AddItemToList(item);
+                AddItemToFile(item);
             }
             try { xTaskList.Save(listFile); }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
@@ -294,33 +297,27 @@ namespace todolist
                     xTaskList.Add(xTasks);
                     xTaskList.Save(listFile);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
             else
-            {
                 OpenTaskListFromFile();
-            }
         }
 
         private void OpenTaskListFromFile()
         {
             TaskList = new List<TodoItem>();
-            //try
-            //{
+            try
+            {
                 xTaskList = XDocument.Load(listFile);
+                xTasks = xTaskList.Root;
                 foreach (XElement element in xTaskList.Element("Tasks").Elements("item"))
                 {
-                    TodoItem item = new TodoItem(/*fakeControl,*/ element.Value)
-                    {
-                        Finished = bool.Parse(element.Element("done").Value)
-                    };
+                    Debug.Assert(element != null, "element != null");
+                    TodoItem item = new TodoItem(element.Element("text").Value, bool.Parse(element.Element("finished").Value));
                     TaskList.Add(item);
                 }
-            //}
-            //catch (Exception ex) { MessageBox.Show(ex.Message);}
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message);}
             BuildList();
         }
 
@@ -351,6 +348,7 @@ namespace todolist
         {
             buttonAdd.IsEnabled = false;
             this.listBox.Items.Clear();
+            TaskList.Clear();
             return VSConstants.S_OK;
         }
 

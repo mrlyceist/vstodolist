@@ -11,7 +11,7 @@ namespace todolist
 {
     public class TodoItem
     {
-        private TodoWindowControl parent;
+        //private TodoWindowControl parent;
         private string name;
         [Description("Name of the ToDo item")]
         [Category("ToDo Fields")]
@@ -21,7 +21,7 @@ namespace todolist
             set
             {
                 name = value;
-                parent.UpdateList(this);
+                //parent.UpdateList(this);
             }
         }
 
@@ -48,7 +48,7 @@ namespace todolist
             set
             {
                 finished = value;
-                parent.UpdateList(this);
+                //parent.UpdateList(this);
             }
         }
 
@@ -72,6 +72,12 @@ namespace todolist
             //}
             //dueDate = dueDate.AddDays(daysAhead);
             finished = false;
+        }
+
+        public TodoItem(string itemName, bool done)
+        {
+            name = itemName;
+            finished = done;
         }
 
         public override string ToString()
