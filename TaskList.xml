@@ -10,11 +10,11 @@
   </item>
   <item>
     <text>add on "Enter"</text>
-    <finished>false</finished>
+    <finished>true</finished>
   </item>
   <item>
     <text>Текст-заглушка</text>
-    <finished>false</finished>
+    <finished>true</finished>
   </item>
   <item>
     <text>Мультилайн в текстбоксе</text>
@@ -34,6 +34,14 @@
   </item>
   <item>
     <text>ToString без статуса</text>
+    <finished>true</finished>
+  </item>
+  <item>
+    <text>Прогрессбар</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>Рефакторинг: удалить все ненужное</text>
     <finished>false</finished>
   </item>
 </Tasks>

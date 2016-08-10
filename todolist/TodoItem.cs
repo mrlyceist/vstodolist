@@ -82,7 +82,7 @@ namespace todolist
 
         public override string ToString()
         {
-            return $"{name} Finished: {finished}";
+            return name;
         }
     }
 }

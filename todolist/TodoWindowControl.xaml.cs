@@ -11,6 +11,8 @@ using System.Linq;
 using EnvDTE;
 using EnvDTE80;
 using System.Runtime.InteropServices;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.VisualStudio.Shell;
 using System.Xml.Linq;
 
@@ -64,7 +66,10 @@ namespace todolist
                 listFile = Path.Combine(solutionDir, "TaskList.xml");
             }
             else
+            {
                 buttonAdd.IsEnabled = false;
+                textBox.IsEnabled = false;
+            }
         }
 
         internal void UpdateList(TodoItem item)
@@ -100,6 +105,7 @@ namespace todolist
                 AddItemToList(item);
                 AddItemToFile(item);
                 TaskList.Add(item);
+                textBox.Text = "";
 
                 var outputWindow = parent.GetVsService(typeof (SVsOutputWindow)) as IVsOutputWindow;
                 IVsOutputWindowPane pane;
@@ -321,6 +327,7 @@ namespace todolist
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
             this.buttonAdd.IsEnabled = true;
+            textBox.IsEnabled = true;
             GetSolution();
             if (File.Exists(listFile))
                 OpenTaskListFromFile();
@@ -338,6 +345,7 @@ namespace todolist
         public int OnAfterCloseSolution(object pUnkReserved)
         {
             buttonAdd.IsEnabled = false;
+            textBox.IsEnabled = false;
             this.listBox.Items.Clear();
             TaskList.Clear();
             return VSConstants.S_OK;
@@ -383,5 +391,19 @@ namespace todolist
             return VSConstants.S_OK;
         }
         #endregion
+
+        private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (textBox.Text == "")
+            {
+                ImageBrush textImageBrush = new ImageBrush();
+                textImageBrush.ImageSource = new BitmapImage(new Uri(@"pack://application:,,,/todolist;component/Resources/faketext.gif", UriKind.RelativeOrAbsolute));
+                textImageBrush.AlignmentX = AlignmentX.Left;
+                textImageBrush.Stretch = Stretch.None;
+                textBox.Background = textImageBrush;
+            }
+            else
+                textBox.Background = null;
+        }
     }
 }
