@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tasks>
+  <item>
+    <text>GridColumn autosize</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>ри отсутствии списка задач показывать надпись "создайте" (в BuildList?)</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>add on "Enter"</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>Текст-заглушка</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>Мультилайн в текстбоксе</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>ресайз окна</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>всплывающие свойства</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>редактирование</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>ToString без статуса</text>
+    <finished>false</finished>
+  </item>
+</Tasks>
