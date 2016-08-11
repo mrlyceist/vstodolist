@@ -3,21 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:platformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
              Background="{DynamicResource VsBrush.Window}"
              Foreground="{DynamicResource VsBrush.WindowText}"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Name="MyToolWindow">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="TextBlock.FontFamily" Value="{DynamicResource VsFont.EnvironmentFontFamily}" />
+                <Setter Property="TextBlock.FontSize" Value="{DynamicResource VsFont.EnvironmentFontSize}" />
+                <Setter Property="Background" Value="{DynamicResource VsBrush.EnvironmentBackgroundGradient}" />
+                <Setter Property="Foreground" Value="{DynamicResource VsBrush.ButtonTextColorKey}"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowButtonInactiveBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.MainWindowButtonHoverActiveBrushKey}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
+        </Style>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="Background" Value="{DynamicResource x:Static platformUI:EnvironmentColors.ComboBoxButtonMouseDownBackgroundBrushKey}"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Canvas HorizontalAlignment="Left" Width="300">
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="TextBox_OnTextChanged" Canvas.Left="10" Canvas.Top="10">
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="TextBox_OnTextChanged" Canvas.Left="10" Canvas.Top="10" VerticalContentAlignment="Center" MaxLines="1">
                 <TextBox.Background>
                     <ImageBrush ImageSource="pack://application:,,,/todolist;component/Resources/faketext.gif" AlignmentX="Left" Stretch="None"/>
                 </TextBox.Background>
             </TextBox>
             <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click" IsDefault="True" Canvas.Left="213" Canvas.Top="10" Height="23"/>
             <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="251" Canvas.Left="10" Canvas.Top="38"/>
-            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265"></Button>
+            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"></Button>
             <ProgressBar x:Name="ProgressBar" Height="20" Width="169" Canvas.Left="92" Canvas.Top="265"></ProgressBar>
             <TextBlock x:Name="ProgressText" TextAlignment="Center" Canvas.Left="92" Canvas.Top="267" Width="169">Add tasks via "Add" button</TextBlock>
         </Canvas>

@@ -144,8 +144,8 @@ namespace todolist
 
             var txt = new TextBox {Text = item.ToString()};
             txt.Name = $"txt{listBox.Items.Count}";
-            txt.MaxWidth = 180;
-            txt.MinWidth = 180;
+            txt.MaxWidth = 175;
+            txt.MinWidth = 175;
             txt.ToolTip = item.Name;
             txt.IsReadOnly = true;
             var check = new CheckBox { Content = txt };
