@@ -18,7 +18,7 @@
   </item>
   <item>
     <text>редактирование</text>
-    <finished>false</finished>
+    <finished>true</finished>
   </item>
   <item>
     <text>Прогрессбар</text>
@@ -34,6 +34,14 @@
   </item>
   <item>
     <text>Кнопка "обновить" при отсутствии списка</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>Обновление пакета?</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>Длина текстблока с таском - фиксированная, если текст не влезает - обрезаем, добавляем "..." и выводим полный текст в тултипе</text>
     <finished>false</finished>
   </item>
 </Tasks>

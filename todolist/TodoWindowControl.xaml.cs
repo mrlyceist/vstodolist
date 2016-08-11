@@ -139,8 +139,11 @@ namespace todolist
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition());
             grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
 
-            var txt = new TextBlock {Text = item.ToString()};
+            var txt = new TextBox {Text = item.ToString()};
+            txt.Name = $"txt{listBox.Items.Count}";
+            txt.IsReadOnly = true;
             var check = new CheckBox { Content = txt };
             if (item.Finished)
             {
@@ -151,15 +154,64 @@ namespace todolist
             check.Checked += Check_Checked;
             check.Unchecked += Check_Unchecked;
             grid.Children.Add(check);
-            Grid.SetColumn(grid.Children[0], 0);
+            Grid.SetColumn(grid.Children[0], 2);
 
-            var btn = new Button { Content = "  X  " };
-            grid.Children.Add(btn);
-            btn.Name = $"btn{listBox.Items.Count}";
-            btn.Click += new RoutedEventHandler(RemoveEvent);
+            var btnDel = new Button { Content = "X" };
+            grid.Children.Add(btnDel);
+            btnDel.Name = $"btn{listBox.Items.Count}";
+            btnDel.Click += new RoutedEventHandler(RemoveEvent);
             Grid.SetColumn(grid.Children[1], 1);
 
+            var btnEdit = new Button {Content = " ! "};
+            grid.Children.Add(btnEdit);
+            btnEdit.Name = $"bed{listBox.Items.Count}";
+            btnEdit.Click += new RoutedEventHandler(EditItem);
+            Grid.SetColumn(grid.Children[2], 0);
+
             listBox.Items.Add(grid);
+        }
+
+        private void EditItem(object sender, RoutedEventArgs e)
+        {
+            var element = e.Source as FrameworkElement;
+            var index = Int32.Parse(element.Name.Substring(3));
+            var parent = LogicalTreeHelper.GetChildren(element.Parent);
+            var children = parent.OfType<FrameworkElement>().ToList();
+            var foundChild = from FrameworkElement child in children
+                             where child.Name == $"chk{index}"
+                             select child;
+            var check = foundChild.First();
+            var text = LogicalTreeHelper.GetChildren(check).OfType<TextBox>().First();
+            text.IsReadOnly = false;
+            text.Focus();
+            text.Select(0,text.Text.Length);
+            buttonAdd.IsDefault = false;
+            var btn = element as Button;
+            btn.IsDefault = true;
+            btn.Click += Btn_Click;
+
+            //MessageBox.Show($"{check.Name},\n {papa.OfType<TextBox>().First()}");
+        }
+
+        private void Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+            var element = e.Source as FrameworkElement;
+            var index = Int32.Parse(element.Name.Substring(3));
+            var parent = LogicalTreeHelper.GetChildren(element.Parent);
+            var children = parent.OfType<FrameworkElement>().ToList();
+            var foundChild = from FrameworkElement child in children
+                             where child.Name == $"chk{index}"
+                             select child;
+            var check = foundChild.First();
+            var text = LogicalTreeHelper.GetChildren(check).OfType<TextBox>().First();
+            TaskList[index].Name = text.Text;
+            text.IsReadOnly = true;
+            var btn = element as Button;
+            btn.IsDefault = false;
+            buttonAdd.IsDefault = true;
+            btn.Click -= Btn_Click;
+            BuildList();
         }
 
         private void Check_Unchecked(object sender, RoutedEventArgs e)

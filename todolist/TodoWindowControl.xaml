@@ -17,9 +17,9 @@
             </TextBox>
             <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click" IsDefault="True" Canvas.Left="213" Canvas.Top="10" Height="23"/>
             <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="251" Canvas.Left="10" Canvas.Top="38"/>
-            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="184" Canvas.Top="265"></Button>
-            <ProgressBar x:Name="ProgressBar" Height="20" Width="169" Canvas.Left="10" Canvas.Top="265"></ProgressBar>
-            <TextBlock x:Name="ProgressText" TextAlignment="Center" Canvas.Left="10" Canvas.Top="267" Width="169">Add tasks via "Add" button</TextBlock>
+            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265"></Button>
+            <ProgressBar x:Name="ProgressBar" Height="20" Width="169" Canvas.Left="92" Canvas.Top="265"></ProgressBar>
+            <TextBlock x:Name="ProgressText" TextAlignment="Center" Canvas.Left="92" Canvas.Top="267" Width="169">Add tasks via "Add" button</TextBlock>
         </Canvas>
     </Grid>
 </UserControl>
