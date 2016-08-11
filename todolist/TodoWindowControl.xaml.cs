@@ -115,6 +115,7 @@ namespace todolist
 
         private void BuildList()
         {
+            var done = TaskList.Count(item => item.Finished);
             listBox.Items.Clear();
             xTaskList.Root.RemoveAll();
             foreach (TodoItem item in TaskList)
@@ -122,6 +123,13 @@ namespace todolist
                 AddItemToList(item);
                 AddItemToFile(item);
             }
+            ProgressBar.Maximum = TaskList.Count;
+            ProgressBar.Value = done;
+            ProgressText.Text = $"{done} of {TaskList.Count} tasks done";
+            if (done > 0)
+                ButtonRemoveDone.IsEnabled = true;
+            else
+                ButtonRemoveDone.IsEnabled = false;
             try { xTaskList.Save(listFile); }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -219,7 +227,7 @@ namespace todolist
         {
             this.buttonAdd.IsEnabled = true;
             textBox.IsEnabled = true;
-            ButtonRemoveDone.IsEnabled = true;
+            //ButtonRemoveDone.IsEnabled = true;
             GetSolution();
             if (File.Exists(listFile))
                 OpenTaskListFromFile();
@@ -240,6 +248,8 @@ namespace todolist
             ButtonRemoveDone.IsEnabled = false;
             this.listBox.Items.Clear();
             TaskList.Clear();
+            ProgressBar.Value = 0;
+            ProgressText.Text = "Add tasks via \"Add\" button";
             return VSConstants.S_OK;
         }
 

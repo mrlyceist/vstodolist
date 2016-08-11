@@ -5,7 +5,7 @@
     <finished>false</finished>
   </item>
   <item>
-    <text>ри отсутствии списка задач показывать надпись "создайте" (в BuildList?)</text>
+    <text>При отсутствии списка задач показывать надпись "создайте" (в BuildList?)</text>
     <finished>false</finished>
   </item>
   <item>
@@ -22,7 +22,7 @@
   </item>
   <item>
     <text>Прогрессбар</text>
-    <finished>false</finished>
+    <finished>true</finished>
   </item>
   <item>
     <text>Manifest, info, license</text>

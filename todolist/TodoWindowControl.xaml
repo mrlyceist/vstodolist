@@ -9,15 +9,17 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Name="MyToolWindow">
     <Grid>
-        <Canvas HorizontalAlignment="Left" Width="306">
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" TextChanged="TextBox_OnTextChanged">
+        <Canvas HorizontalAlignment="Left" Width="300">
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="TextBox_OnTextChanged" Canvas.Left="10" Canvas.Top="10">
                 <TextBox.Background>
                     <ImageBrush ImageSource="pack://application:,,,/todolist;component/Resources/faketext.gif" AlignmentX="Left" Stretch="None"/>
                 </TextBox.Background>
             </TextBox>
-            <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" Margin="236,13,0,0" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click" IsDefault="True"/>
-            <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="274" Canvas.Left="10" Canvas.Top="38"/>
-            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="207" Canvas.Top="265"></Button>
+            <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click" IsDefault="True" Canvas.Left="213" Canvas.Top="10" Height="23"/>
+            <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="251" Canvas.Left="10" Canvas.Top="38"/>
+            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="184" Canvas.Top="265"></Button>
+            <ProgressBar x:Name="ProgressBar" Height="20" Width="169" Canvas.Left="10" Canvas.Top="265"></ProgressBar>
+            <TextBlock x:Name="ProgressText" TextAlignment="Center" Canvas.Left="10" Canvas.Top="267" Width="169">Add tasks via "Add" button</TextBlock>
         </Canvas>
     </Grid>
 </UserControl>
