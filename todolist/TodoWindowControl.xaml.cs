@@ -11,6 +11,7 @@ using System.Linq;
 using EnvDTE;
 using EnvDTE80;
 using System.Runtime.InteropServices;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.VisualStudio.Shell;
@@ -143,6 +144,9 @@ namespace todolist
 
             var txt = new TextBox {Text = item.ToString()};
             txt.Name = $"txt{listBox.Items.Count}";
+            txt.MaxWidth = 180;
+            txt.MinWidth = 180;
+            txt.ToolTip = item.Name;
             txt.IsReadOnly = true;
             var check = new CheckBox { Content = txt };
             if (item.Finished)
@@ -154,19 +158,19 @@ namespace todolist
             check.Checked += Check_Checked;
             check.Unchecked += Check_Unchecked;
             grid.Children.Add(check);
-            Grid.SetColumn(grid.Children[0], 2);
+            Grid.SetColumn(grid.Children[0], 1);
 
             var btnDel = new Button { Content = "X" };
             grid.Children.Add(btnDel);
             btnDel.Name = $"btn{listBox.Items.Count}";
             btnDel.Click += new RoutedEventHandler(RemoveEvent);
-            Grid.SetColumn(grid.Children[1], 1);
+            Grid.SetColumn(grid.Children[1], 0);
 
-            var btnEdit = new Button {Content = " ! "};
+            var btnEdit = new Button {Content = "edit"};
             grid.Children.Add(btnEdit);
             btnEdit.Name = $"bed{listBox.Items.Count}";
             btnEdit.Click += new RoutedEventHandler(EditItem);
-            Grid.SetColumn(grid.Children[2], 0);
+            Grid.SetColumn(grid.Children[2], 2);
 
             listBox.Items.Add(grid);
         }

@@ -1,15 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Tasks>
   <item>
-    <text>GridColumn autosize</text>
-    <finished>false</finished>
-  </item>
-  <item>
     <text>При отсутствии списка задач показывать надпись "создайте" (в BuildList?)</text>
-    <finished>false</finished>
-  </item>
-  <item>
-    <text>Мультилайн в текстбоксе</text>
     <finished>false</finished>
   </item>
   <item>
@@ -42,6 +34,6 @@
   </item>
   <item>
     <text>Длина текстблока с таском - фиксированная, если текст не влезает - обрезаем, добавляем "..." и выводим полный текст в тултипе</text>
-    <finished>false</finished>
+    <finished>true</finished>
   </item>
 </Tasks>
