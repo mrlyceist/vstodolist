@@ -32,13 +32,10 @@ namespace todolist
     /// </summary>
     public partial class TodoWindowControl : UserControl, IVsSolutionEvents
     {
-        private TodoWindowTaskProvider taskProvider;
-        public TodoWindow parent;
         private Solution solution;
         private string listFile;
         private XDocument xTaskList;
         private XElement xTasks;
-        //private TodoWindowControl fakeControl;
 
         public List<TodoItem> TaskList = new List<TodoItem>();
 
@@ -48,8 +45,6 @@ namespace todolist
         public TodoWindowControl(TodoWindow window)
         {
             this.InitializeComponent();
-            parent = window;
-            //fakeControl = this;
 
             uint cookie = 0;
             TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
@@ -69,23 +64,10 @@ namespace todolist
             {
                 buttonAdd.IsEnabled = false;
                 textBox.IsEnabled = false;
+                ButtonRemoveDone.IsEnabled = false;
             }
         }
-
-        internal void UpdateList(TodoItem item)
-        {
-            //var index = listBox.SelectedIndex;
-            //listBox.Items.RemoveAt(index);
-            //listBox.Items.Insert(index, item);
-            //listBox.SelectedItem = index;
-        }
-
-        internal void CheckForErrors()
-        {
-            //foreach (TodoItem item in listBox.Items.Cast<TodoItem>().Where(item => item.DueDate < DateTime.Now))
-            //    ReportError($"ToDo Item is out of date: {item.ToString()}");
-        }
-
+        
         /// <summary>
         /// Handles click on the button by displaying a message box.
         /// </summary>
@@ -106,16 +88,8 @@ namespace todolist
                 AddItemToFile(item);
                 TaskList.Add(item);
                 textBox.Text = "";
-
-                var outputWindow = parent.GetVsService(typeof (SVsOutputWindow)) as IVsOutputWindow;
-                IVsOutputWindowPane pane;
-                Guid guidGeneralPane = VSConstants.GUID_OutWindowGeneralPane;
-                outputWindow.GetPane(ref guidGeneralPane, out pane);
-                pane?.OutputString($"ToDo Item created: {item.ToString()}\r'n");
                 
                 BuildList();
-                TrackSelection();
-                CheckForErrors();
             }
         }
 
@@ -195,89 +169,6 @@ namespace todolist
             TaskList[index].Finished = true;
             BuildList();
         }
-
-        private SelectionContainer mySelContainer;
-        private System.Collections.ArrayList mySelItems;
-        private IVsWindowFrame frame = null;
-
-        private void TrackSelection()
-        {
-            if (frame == null)
-            {
-                var shell = parent.GetVsService(typeof(SVsUIShell)) as IVsUIShell;
-                if (shell != null)
-                {
-                    var guidPropertyBrowser = new
-                    Guid(ToolWindowGuids.PropertyBrowser);
-                    shell.FindToolWindow((uint)__VSFINDTOOLWIN.FTW_fForceCreate,
-                    ref guidPropertyBrowser, out frame);
-                }
-            }
-            frame?.Show();
-            if (mySelContainer == null)
-                mySelContainer = new SelectionContainer();
-
-            mySelItems = new System.Collections.ArrayList();
-
-            var selected = listBox.SelectedItem as TodoItem;
-            if (selected != null)
-                mySelItems.Add(selected);
-
-            mySelContainer.SelectedObjects = mySelItems;
-
-            ITrackSelection track = parent.GetVsService(typeof(STrackSelection))
-                as ITrackSelection;
-
-            track?.OnSelectChange(mySelContainer);
-        }
-
-        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            TrackSelection();
-        }
-
-
-        private void CreateProvider()
-        {
-            if (taskProvider==null)
-                taskProvider = new TodoWindowTaskProvider(parent) {ProviderName = "To Do"};
-        }
-
-        private void ClearError()
-        {
-            CreateProvider();
-            taskProvider.Tasks.Clear();
-        }
-
-        private void ReportError(string p)
-        {
-            CreateProvider();
-            var errorTask = new Task
-            {
-                CanDelete = false,
-                Category = TaskCategory.Comments,
-                Text = p
-            };
-
-            taskProvider.Tasks.Add(errorTask);
-            taskProvider.Show();
-
-            var taskList = parent.GetVsService(typeof (SVsTaskList)) as IVsTaskList2;
-            if(taskList==null)
-                return;
-
-            var guidProvider = typeof (TodoWindowTaskProvider).GUID;
-            taskList.SetActiveProvider(ref guidProvider);
-        }
-
-        [Guid("72de1eAD-a00c-4f57-bff7-57edb162d0be")]
-        public class TodoWindowTaskProvider : TaskProvider
-        {
-            public TodoWindowTaskProvider(IServiceProvider sp)
-                : base(sp)
-            {
-            } 
-        }
         
         private void TryCreate(string listFile)
         {
@@ -328,10 +219,10 @@ namespace todolist
         {
             this.buttonAdd.IsEnabled = true;
             textBox.IsEnabled = true;
+            ButtonRemoveDone.IsEnabled = true;
             GetSolution();
             if (File.Exists(listFile))
                 OpenTaskListFromFile();
-            //TryCreate(listFile);
             return VSConstants.S_OK;
         }
 
@@ -346,6 +237,7 @@ namespace todolist
         {
             buttonAdd.IsEnabled = false;
             textBox.IsEnabled = false;
+            ButtonRemoveDone.IsEnabled = false;
             this.listBox.Items.Clear();
             TaskList.Clear();
             return VSConstants.S_OK;
@@ -403,7 +295,13 @@ namespace todolist
                 textBox.Background = textImageBrush;
             }
             else
-                textBox.Background = null;
+                textBox.Background = new SolidColorBrush(Colors.White);
+        }
+
+        private void ButtonRemoveDone_OnClick(object sender, RoutedEventArgs e)
+        {
+            TaskList.RemoveAll(item => item.Finished == true);
+            BuildList();
         }
     }
 }

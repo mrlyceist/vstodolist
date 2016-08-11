@@ -44,7 +44,6 @@ namespace todolist
     [ProvideToolWindow(typeof(TodoWindow))]
     [Guid(TodoWindowPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    [ProvideOptionPage(typeof(ToolsOptions), "ToDo", "General", 101, 106, true)]
     public sealed class TodoWindowPackage : Package//, IVsSolutionEvents
     {
         /// <summary>
@@ -133,8 +132,6 @@ namespace todolist
             base.Initialize();
 
             theSolution = GetService(typeof(SVsSolution)) as IVsSolution;
-            //uint cookie = 0;
-            //solution.AdviseSolutionEvents(this, out cookie);
         }
 
         public static IVsSolution theSolution { get; set; }

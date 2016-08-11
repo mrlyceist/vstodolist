@@ -64,9 +64,6 @@
       <DependentUpon>TodoWindowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="TodoWindowPackage.cs" />
-    <Compile Include="ToolsOptions.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

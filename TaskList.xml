@@ -26,7 +26,7 @@
   </item>
   <item>
     <text>всплывающие свойства</text>
-    <finished>false</finished>
+    <finished>true</finished>
   </item>
   <item>
     <text>редактирование</text>
@@ -42,6 +42,10 @@
   </item>
   <item>
     <text>Рефакторинг: удалить все ненужное</text>
-    <finished>false</finished>
+    <finished>true</finished>
+  </item>
+  <item>
+    <text>Белый фон у текстбокса при вводе текста</text>
+    <finished>true</finished>
   </item>
 </Tasks>
