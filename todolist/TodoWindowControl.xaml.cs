@@ -46,6 +46,7 @@ namespace todolist
         public TodoWindowControl(TodoWindow window)
         {
             this.InitializeComponent();
+            MinWidth = 150;
 
             uint cookie = 0;
             TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
@@ -138,17 +139,31 @@ namespace todolist
         private void AddItemToList(TodoItem item)
         {
             var grid = new Grid();
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.Name = "DynamicGrid";
+            grid.Width = listBox.Width - 30;
+            grid.Margin=new Thickness(0,0,10,0);
+            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            ColumnDefinition cd1 = new ColumnDefinition();
+            cd1.Width = new GridLength(15);
+            ColumnDefinition cd2 = new ColumnDefinition();
+            //cd2.Width=GridLength.Auto;
+            ColumnDefinition cd3 = new ColumnDefinition();
+            cd3.Width = new GridLength(27);
+            grid.ColumnDefinitions.Add(cd1);
+            grid.ColumnDefinitions.Add(cd2);
+            grid.ColumnDefinitions.Add(cd3);
 
             var txt = new TextBox {Text = item.ToString()};
             txt.Name = $"txt{listBox.Items.Count}";
-            txt.MaxWidth = 175;
-            txt.MinWidth = 175;
+            txt.MinWidth = ActualWidth - 62;
+            txt.Height = 20;
+            txt.HorizontalAlignment = HorizontalAlignment.Stretch;
             txt.ToolTip = item.Name;
+            txt.Style=Resources["TxtStyle"] as Style;
             txt.IsReadOnly = true;
             var check = new CheckBox { Content = txt };
+            check.Height = 20;
+            check.Style = Resources["CheckStyle"] as Style;
             if (item.Finished)
             {
                 txt.TextDecorations.Add(TextDecorations.Strikethrough);
@@ -163,14 +178,16 @@ namespace todolist
 
             var btnDel = new Button { Content = "X" };
             btnDel.Style = Resources["BtnStyle"] as Style;
+            btnDel.Height = 20;
             btnDel.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnDel);
             btnDel.Name = $"btn{listBox.Items.Count}";
             btnDel.Click += new RoutedEventHandler(RemoveEvent);
             Grid.SetColumn(grid.Children[1], 0);
 
-            var btnEdit = new Button {Content = "edit"};
+            var btnEdit = new Button {Content = "Edit"};
             btnEdit.Style = Resources["BtnStyle"] as Style;
+            btnEdit.Height = 20;
             btnEdit.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnEdit);
             btnEdit.Name = $"bed{listBox.Items.Count}";
@@ -197,6 +214,7 @@ namespace todolist
             buttonAdd.IsDefault = false;
             var btn = element as Button;
             btn.IsDefault = true;
+            btn.Content = "OK";
             btn.Click += Btn_Click;
 
             //MessageBox.Show($"{check.Name},\n {papa.OfType<TextBox>().First()}");
@@ -217,6 +235,7 @@ namespace todolist
             TaskList[index].Name = text.Text;
             text.IsReadOnly = true;
             var btn = element as Button;
+            btn.Content = "Edit";
             btn.IsDefault = false;
             buttonAdd.IsDefault = true;
             btn.Click -= Btn_Click;
@@ -373,6 +392,29 @@ namespace todolist
         {
             TaskList.RemoveAll(item => item.Finished == true);
             BuildList();
+        }
+
+        private void TodoWindowControl_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            AdjustSize();
+        }
+
+        private void TodoWindowControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            AdjustSize();
+        }
+
+        private void AdjustSize()
+        {
+            Canvas.Width = ActualWidth - 20;
+            //Canvas.Height = Math.Max(10, Math.Min(48, ActualHeight - 24));
+            listBox.Width = Canvas.Width;
+            if (listFile!=null)
+                BuildList();
+            textBox.Width = ActualWidth - 80;
+            ProgressBar.Width = ActualWidth - 109;
+            ProgressText.Width = ActualWidth - 109;
+            wat.Width = ActualWidth - 20;
         }
     }
 }

@@ -79,6 +79,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resources\faketext.gif" />
+    <Resource Include="Resources\checkMark.gif" />
     <Content Include="Resources\TodoWindowCommand.png" />
     <Content Include="Resources\TodoWindowPackage.ico" />
     <Content Include="stylesheet.css" />
