@@ -155,18 +155,23 @@ namespace todolist
                 check.IsChecked = true;
             }
             check.Name = $"chk{listBox.Items.Count}";
+            check.SetResourceReference(BackgroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.CommandBarCheckBoxDisabledBrushKey);
             check.Checked += Check_Checked;
             check.Unchecked += Check_Unchecked;
             grid.Children.Add(check);
             Grid.SetColumn(grid.Children[0], 1);
 
             var btnDel = new Button { Content = "X" };
+            btnDel.Style = Resources["BtnStyle"] as Style;
+            btnDel.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnDel);
             btnDel.Name = $"btn{listBox.Items.Count}";
             btnDel.Click += new RoutedEventHandler(RemoveEvent);
             Grid.SetColumn(grid.Children[1], 0);
 
             var btnEdit = new Button {Content = "edit"};
+            btnEdit.Style = Resources["BtnStyle"] as Style;
+            btnEdit.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnEdit);
             btnEdit.Name = $"bed{listBox.Items.Count}";
             btnEdit.Click += new RoutedEventHandler(EditItem);

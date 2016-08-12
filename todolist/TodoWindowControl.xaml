@@ -10,28 +10,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Name="MyToolWindow">
     <UserControl.Resources>
-        <Style TargetType="{x:Type Button}">
-            <Style.Setters>
-                <Setter Property="TextBlock.FontFamily" Value="{DynamicResource VsFont.EnvironmentFontFamily}" />
-                <Setter Property="TextBlock.FontSize" Value="{DynamicResource VsFont.EnvironmentFontSize}" />
-                <Setter Property="Background" Value="{DynamicResource VsBrush.EnvironmentBackgroundGradient}" />
-                <Setter Property="Foreground" Value="{DynamicResource VsBrush.ButtonTextColorKey}"/>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowButtonInactiveBrushKey}}"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.MainWindowButtonHoverActiveBrushKey}}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="{x:Type ListBox}">
-            <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
-        </Style>
-        <Style TargetType="{x:Type ProgressBar}">
-            <Setter Property="Background" Value="{DynamicResource x:Static platformUI:EnvironmentColors.ComboBoxButtonMouseDownBackgroundBrushKey}"/>
-        </Style>
+        <ResourceDictionary Source="Resources/Styles.xaml"/>
     </UserControl.Resources>
     <Grid>
         <Canvas HorizontalAlignment="Left" Width="300">
@@ -40,10 +19,10 @@
                     <ImageBrush ImageSource="pack://application:,,,/todolist;component/Resources/faketext.gif" AlignmentX="Left" Stretch="None"/>
                 </TextBox.Background>
             </TextBox>
-            <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click" IsDefault="True" Canvas.Left="213" Canvas.Top="10" Height="23"/>
+            <Button x:Name="buttonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Click="buttonAdd_Click" IsDefault="True" Canvas.Left="213" Canvas.Top="10" Height="23" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUI:EnvironmentColors.SystemButtonTextBrushKey}}"/>
             <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="251" Canvas.Left="10" Canvas.Top="38"/>
-            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"></Button>
-            <ProgressBar x:Name="ProgressBar" Height="20" Width="169" Canvas.Left="92" Canvas.Top="265"></ProgressBar>
+            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUI:EnvironmentColors.SystemButtonTextBrushKey}}"/>
+            <ProgressBar x:Name="ProgressBar" Height="20" Width="169" Canvas.Left="92" Canvas.Top="265" Background="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
             <TextBlock x:Name="ProgressText" TextAlignment="Center" Canvas.Left="92" Canvas.Top="267" Width="169">Add tasks via "Add" button</TextBlock>
         </Canvas>
     </Grid>
