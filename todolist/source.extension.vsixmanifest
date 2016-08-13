@@ -1,9 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="todolist.Алексей Дорогов.3181c7d8-3d1f-43ac-85e5-40506f3ef02c" Version="1.0" Language="en-US" Publisher="Алексей Дорогов" />
-    <DisplayName>todolist</DisplayName>
-    <Description>Empty VSIX Project.</Description>
+    <Identity Id="todolist.AlexeyDorogov.3181c7d8-3d1f-43ac-85e5-40506f3ef02c" Version="1.0" Language="en-US" Publisher="Алексей Дорогов" />
+    <DisplayName>Todo List</DisplayName>
+    <Description xml:space="preserve">Simple yet fancy Todo extension for Visual Studio 2015.
+Adds "TaskList.xml" file to the solution root directory, that can be easily version controlled.</Description>
+    <MoreInfo>https://github.com/mrlyceist/vstodolist</MoreInfo>
+    <License>License.rtf</License>
+    <Icon>Resources\TodoWindowPackage.ico</Icon>
+    <PreviewImage>Resources\Preview.PNG</PreviewImage>
+    <Tags>Todo, TodoList</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />

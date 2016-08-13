@@ -10,11 +10,8 @@ using System.IO;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
-using System.Runtime.InteropServices;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.VisualStudio.Shell;
 using System.Xml.Linq;
 
 namespace todolist
@@ -23,7 +20,6 @@ namespace todolist
     using System.Windows;
     using System.Windows.Controls;
     using System;
-    using System.Runtime.InteropServices;
     using Microsoft.VisualStudio.Shell.Interop;
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Shell;
@@ -51,7 +47,6 @@ namespace todolist
             uint cookie = 0;
             TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
             GetSolution();
-            AdjustSize();
         }
 
         private void GetSolution()

@@ -1,15 +1,16 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("todolist")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Todo List")]
+[assembly: AssemblyDescription("Simple yet fancy Todo List extension for VS2015")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("todolist")]
+[assembly: AssemblyProduct("TodoList")]
 [assembly: AssemblyCopyright("Alexey Dorogov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -29,5 +30,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.6.0")]
-[assembly: AssemblyFileVersion("0.9.6.0")]
+[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: NeutralResourcesLanguage("")]
+

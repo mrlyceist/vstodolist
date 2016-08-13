@@ -5,14 +5,6 @@
     <finished>false</finished>
   </item>
   <item>
-    <text>ресайз окна</text>
-    <finished>true</finished>
-  </item>
-  <item>
-    <text>Manifest, info, license</text>
-    <finished>false</finished>
-  </item>
-  <item>
     <text>Реакция на перезапуск студии</text>
     <finished>false</finished>
   </item>
@@ -29,32 +21,12 @@
     <finished>false</finished>
   </item>
   <item>
-    <text>Размеры, бэки, бордеры задач</text>
-    <finished>true</finished>
-  </item>
-  <item>
     <text>ловить тему студии, менять подсказку</text>
     <finished>false</finished>
   </item>
   <item>
-    <text>размер чекбокса</text>
-    <finished>true</finished>
-  </item>
-  <item>
-    <text>добавить место для сайдслайдера</text>
-    <finished>true</finished>
-  </item>
-  <item>
-    <text>textbox hover border</text>
-    <finished>true</finished>
-  </item>
-  <item>
     <text>отслеживать слайдер</text>
     <finished>false</finished>
-  </item>
-  <item>
-    <text>текстбокс вертикал алайнмент центр</text>
-    <finished>true</finished>
   </item>
   <item>
     <text>discard changes on Esc</text>
