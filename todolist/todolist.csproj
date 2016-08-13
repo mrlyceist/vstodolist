@@ -73,12 +73,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="index.html" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resources\faketext.gif" />
+    <Resource Include="Resources\checkMark2.gif" />
     <Resource Include="Resources\checkMark.gif" />
     <Content Include="Resources\TodoWindowCommand.png" />
     <Content Include="Resources\TodoWindowPackage.ico" />

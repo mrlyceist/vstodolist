@@ -51,6 +51,7 @@ namespace todolist
             uint cookie = 0;
             TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
             GetSolution();
+            AdjustSize();
         }
 
         private void GetSolution()
@@ -158,6 +159,7 @@ namespace todolist
             txt.MinWidth = ActualWidth - 62;
             txt.Height = 20;
             txt.HorizontalAlignment = HorizontalAlignment.Stretch;
+            txt.VerticalContentAlignment = VerticalAlignment.Center;
             txt.ToolTip = item.Name;
             txt.Style=Resources["TxtStyle"] as Style;
             txt.IsReadOnly = true;

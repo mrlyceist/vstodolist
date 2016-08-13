@@ -150,22 +150,12 @@
                             <Trigger Property="IsKeyboardFocused" Value="true">
                                 <Setter Property="BorderBrush" TargetName="border"
                                         Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ComboBoxFocusedBorderBrushKey}}" />
-                                <!--<Setter Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="#808080"/>
-                                    </Setter.Value>
-                                </Setter>-->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style.Setters>
-        <!--<Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}"/>
-            </Trigger>
-        </Style.Triggers>-->
     </Style>
     <Style x:Key="CheckStyle"
            TargetType="{x:Type CheckBox}">
@@ -214,7 +204,6 @@
                                         </LinearGradientBrush.GradientStops>
                                     </LinearGradientBrush>
                                 </Border.Background>
-                                <!--<Grid Visibility="Hidden" Margin="4,0,6,0" x:Name="CheckMark"-->
                                 <Grid Visibility="Hidden" x:Name="CheckMark"
                                       VerticalAlignment="Center">
                                     <Image Source="checkMark.gif" />
@@ -291,7 +280,6 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <!--<ContentPresenter Margin="4,0,0,0"-->
                         <ContentPresenter Margin="0,0,0,0"
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Left"
