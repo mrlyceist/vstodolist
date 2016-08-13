@@ -150,6 +150,11 @@
                             <Trigger Property="IsKeyboardFocused" Value="true">
                                 <Setter Property="BorderBrush" TargetName="border"
                                         Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ComboBoxFocusedBorderBrushKey}}" />
+                                <!--<Setter Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#808080"/>
+                                    </Setter.Value>
+                                </Setter>-->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

@@ -385,7 +385,7 @@ namespace todolist
                 textBox.Background = textImageBrush;
             }
             else
-                textBox.Background = new SolidColorBrush(Colors.White);
+                textBox.Background = new SolidColorBrush(Color.FromRgb(128,128,128));
         }
 
         private void ButtonRemoveDone_OnClick(object sender, RoutedEventArgs e)

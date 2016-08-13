@@ -56,4 +56,8 @@
     <text>текстбокс вертикал алайнмент центр</text>
     <finished>false</finished>
   </item>
+  <item>
+    <text>discard changes on Esc</text>
+    <finished>false</finished>
+  </item>
 </Tasks>
