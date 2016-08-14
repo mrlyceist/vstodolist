@@ -32,4 +32,8 @@
     <text>discard changes on Esc</text>
     <finished>false</finished>
   </item>
+  <item>
+    <text>Файлик создается всегда, а надо только при добавлении таска!</text>
+    <finished>false</finished>
+  </item>
 </Tasks>
