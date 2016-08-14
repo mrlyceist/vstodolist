@@ -62,62 +62,7 @@ namespace todolist
             // initialization is the Initialize method.
         }
 
-        public static DTE dte { get; private set; }
-
-        //#region Interface Implementation
-        //public int OnAfterCloseSolution(object pUnkReserved)
-        //{
-        //    TodoWindowControl.PrepareListOnClose();
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
-        //{
-        //    TodoWindowControl.PrepareListOnOpen();
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnBeforeCloseSolution(object pUnkReserved)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
-        //{
-        //    return VSConstants.S_OK;
-        //}
-
-        //#endregion
+        public static DTE Dte { get; private set; }
         
         #region Package Members
 
@@ -128,13 +73,13 @@ namespace todolist
         protected override void Initialize()
         {
             TodoWindowCommand.Initialize(this);
-            dte = (DTE) GetService(typeof (DTE));
+            Dte = (DTE) GetService(typeof (DTE));
             base.Initialize();
 
-            theSolution = GetService(typeof(SVsSolution)) as IVsSolution;
+            TheSolution = GetService(typeof(SVsSolution)) as IVsSolution;
         }
 
-        public static IVsSolution theSolution { get; set; }
+        public static IVsSolution TheSolution { get; set; }
 
         #endregion
     }

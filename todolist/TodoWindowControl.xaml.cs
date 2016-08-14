@@ -29,10 +29,10 @@ namespace todolist
     /// </summary>
     public partial class TodoWindowControl : UserControl, IVsSolutionEvents
     {
-        private Solution solution;
-        private string listFile;
-        private XDocument xTaskList;
-        private XElement xTasks;
+        private Solution _solution;
+        private string _listFile;
+        private XDocument _xTaskList;
+        private XElement _xTasks;
 
         public List<TodoItem> TaskList = new List<TodoItem>();
 
@@ -45,23 +45,23 @@ namespace todolist
             MinWidth = 150;
 
             uint cookie = 0;
-            TodoWindowPackage.theSolution.AdviseSolutionEvents(this, out cookie);
+            TodoWindowPackage.TheSolution.AdviseSolutionEvents(this, out cookie);
             GetSolution();
         }
 
         private void GetSolution()
         {
             DTE2 dte = Package.GetGlobalService(typeof (SDTE)) as DTE2;
-            solution = dte.Solution;
-            if (solution.FullName != string.Empty)
+            if (dte != null) _solution = dte.Solution;
+            if (_solution.FullName != string.Empty)
             {
-                string solutionDir = System.IO.Path.GetDirectoryName(solution.FullName);
-                listFile = Path.Combine(solutionDir, "TaskList.xml");
+                string solutionDir = System.IO.Path.GetDirectoryName(_solution.FullName);
+                if (solutionDir != null) _listFile = Path.Combine(solutionDir, "TaskList.xml");
             }
             else
             {
-                buttonAdd.IsEnabled = false;
-                textBox.IsEnabled = false;
+                ButtonAdd.IsEnabled = false;
+                TextBox.IsEnabled = false;
                 ButtonRemoveDone.IsEnabled = false;
             }
         }
@@ -75,17 +75,17 @@ namespace todolist
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Default event handler naming pattern")]
         private void buttonAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (textBox.Text.Length > 0)
+            if (TextBox.Text.Length > 0)
             {
-                var item = new TodoItem(/*this,*/ textBox.Text);
+                var item = new TodoItem(TextBox.Text);
                 
-                if (!File.Exists(listFile))
-                    TryCreate(listFile);
+                if (!File.Exists(_listFile))
+                    TryCreate(_listFile);
 
                 AddItemToList(item);
                 AddItemToFile(item);
                 TaskList.Add(item);
-                textBox.Text = "";
+                TextBox.Text = "";
                 
                 BuildList();
             }
@@ -97,8 +97,8 @@ namespace todolist
             XElement xText = new XElement("text", item.Name);
             XElement xDone = new XElement("finished", item.Finished.ToString().ToLower());
             xItem.Add(xText, xDone);
-            xTasks.Add(xItem);
-            try { xTaskList.Save(listFile); }
+            _xTasks.Add(xItem);
+            try { _xTaskList.Save(_listFile); }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
@@ -106,7 +106,7 @@ namespace todolist
         {
             var element = e.Source as FrameworkElement;
             var index = Int32.Parse(element.Name.Substring(3));
-            listBox.Items.RemoveAt(index);
+            ListBox.Items.RemoveAt(index);
             TaskList.RemoveAt(index);
             BuildList();
         }
@@ -114,89 +114,102 @@ namespace todolist
         private void BuildList()
         {
             var done = TaskList.Count(item => item.Finished);
-            listBox.Items.Clear();
-            xTaskList.Root.RemoveAll();
-            foreach (TodoItem item in TaskList)
+            ListBox.Items.Clear();
+            // TODO: HERE GOES THE PROBLEM!
+            if (_xTaskList == null) return;
             {
-                AddItemToList(item);
-                AddItemToFile(item);
+                _xTaskList.Root?.RemoveAll();
+                foreach (TodoItem item in TaskList)
+                {
+                    AddItemToList(item);
+                    AddItemToFile(item);
+                }
+                ProgressBar.Maximum = TaskList.Count;
+                ProgressBar.Value = done;
+                ProgressText.Text = $"{done} of {TaskList.Count} tasks done";
+                ButtonRemoveDone.IsEnabled = done > 0;
+                try { _xTaskList.Save(_listFile); }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
-            ProgressBar.Maximum = TaskList.Count;
-            ProgressBar.Value = done;
-            ProgressText.Text = $"{done} of {TaskList.Count} tasks done";
-            if (done > 0)
-                ButtonRemoveDone.IsEnabled = true;
-            else
-                ButtonRemoveDone.IsEnabled = false;
-            try { xTaskList.Save(listFile); }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void AddItemToList(TodoItem item)
         {
-            var grid = new Grid();
-            grid.Name = "DynamicGrid";
-            grid.Width = listBox.Width - 30;
-            grid.Margin=new Thickness(0,0,10,0);
-            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
-            ColumnDefinition cd1 = new ColumnDefinition();
-            cd1.Width = new GridLength(15);
+            var grid = new Grid
+            {
+                Name = "DynamicGrid",
+                Width = ListBox.Width - 30,
+                Margin = new Thickness(0, 0, 10, 0),
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+            ColumnDefinition cd1 = new ColumnDefinition {Width = new GridLength(15)};
             ColumnDefinition cd2 = new ColumnDefinition();
-            //cd2.Width=GridLength.Auto;
-            ColumnDefinition cd3 = new ColumnDefinition();
-            cd3.Width = new GridLength(27);
+            ColumnDefinition cd3 = new ColumnDefinition {Width = new GridLength(27)};
             grid.ColumnDefinitions.Add(cd1);
             grid.ColumnDefinitions.Add(cd2);
             grid.ColumnDefinitions.Add(cd3);
 
-            var txt = new TextBox {Text = item.ToString()};
-            txt.Name = $"txt{listBox.Items.Count}";
-            txt.MinWidth = ActualWidth - 62;
-            txt.Height = 20;
-            txt.HorizontalAlignment = HorizontalAlignment.Stretch;
-            txt.VerticalContentAlignment = VerticalAlignment.Center;
-            txt.ToolTip = item.Name;
-            txt.Style=Resources["TxtStyle"] as Style;
-            txt.IsReadOnly = true;
-            var check = new CheckBox { Content = txt };
-            check.Height = 20;
-            check.Style = Resources["CheckStyle"] as Style;
+            var txt = new TextBox
+            {
+                Text = item.ToString(),
+                Name = $"txt{ListBox.Items.Count}",
+                MinWidth = ActualWidth - 62,
+                Height = 20,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                ToolTip = item.Name,
+                Style = Resources["TxtStyle"] as Style,
+                IsReadOnly = true
+            };
+            var check = new CheckBox
+            {
+                Content = txt,
+                Height = 20,
+                Style = Resources["CheckStyle"] as Style
+            };
             if (item.Finished)
             {
                 txt.TextDecorations.Add(TextDecorations.Strikethrough);
                 check.IsChecked = true;
             }
-            check.Name = $"chk{listBox.Items.Count}";
+            check.Name = $"chk{ListBox.Items.Count}";
             check.SetResourceReference(BackgroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.CommandBarCheckBoxDisabledBrushKey);
             check.Checked += Check_Checked;
             check.Unchecked += Check_Unchecked;
             grid.Children.Add(check);
             Grid.SetColumn(grid.Children[0], 1);
 
-            var btnDel = new Button { Content = "X" };
-            btnDel.Style = Resources["BtnStyle"] as Style;
-            btnDel.Height = 20;
+            var btnDel = new Button
+            {
+                Content = "X",
+                Style = Resources["BtnStyle"] as Style,
+                Height = 20
+            };
             btnDel.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnDel);
-            btnDel.Name = $"btn{listBox.Items.Count}";
+            btnDel.Name = $"btn{ListBox.Items.Count}";
             btnDel.Click += new RoutedEventHandler(RemoveEvent);
             Grid.SetColumn(grid.Children[1], 0);
 
-            var btnEdit = new Button {Content = "Edit"};
-            btnEdit.Style = Resources["BtnStyle"] as Style;
-            btnEdit.Height = 20;
+            var btnEdit = new Button
+            {
+                Content = "Edit",
+                Style = Resources["BtnStyle"] as Style,
+                Height = 20
+            };
             btnEdit.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnEdit);
-            btnEdit.Name = $"bed{listBox.Items.Count}";
+            btnEdit.Name = $"bed{ListBox.Items.Count}";
             btnEdit.Click += new RoutedEventHandler(EditItem);
             Grid.SetColumn(grid.Children[2], 2);
 
-            listBox.Items.Add(grid);
+            ListBox.Items.Add(grid);
         }
 
         private void EditItem(object sender, RoutedEventArgs e)
         {
             var element = e.Source as FrameworkElement;
+            // TODO: possible null
             var index = Int32.Parse(element.Name.Substring(3));
             var parent = LogicalTreeHelper.GetChildren(element.Parent);
             var children = parent.OfType<FrameworkElement>().ToList();
@@ -208,50 +221,64 @@ namespace todolist
             text.IsReadOnly = false;
             text.Focus();
             text.Select(0,text.Text.Length);
-            buttonAdd.IsDefault = false;
+            ButtonAdd.IsDefault = false;
             var btn = element as Button;
-            btn.IsDefault = true;
-            btn.Content = "OK";
-            btn.Click += Btn_Click;
-
-            //MessageBox.Show($"{check.Name},\n {papa.OfType<TextBox>().First()}");
+            if (btn != null)
+            {
+                btn.IsDefault = true;
+                btn.Content = "OK";
+                btn.Click += Btn_Click;
+            }
         }
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO: possible null
+            // TODO: Move out common code.
             var element = e.Source as FrameworkElement;
-            var index = Int32.Parse(element.Name.Substring(3));
-            var parent = LogicalTreeHelper.GetChildren(element.Parent);
-            var children = parent.OfType<FrameworkElement>().ToList();
-            var foundChild = from FrameworkElement child in children
-                             where child.Name == $"chk{index}"
-                             select child;
-            var check = foundChild.First();
-            var text = LogicalTreeHelper.GetChildren(check).OfType<TextBox>().First();
-            TaskList[index].Name = text.Text;
-            text.IsReadOnly = true;
+            if (element != null)
+            {
+                var index = Int32.Parse(element.Name.Substring(3));
+                var parent = LogicalTreeHelper.GetChildren(element.Parent);
+                var children = parent.OfType<FrameworkElement>().ToList();
+                var foundChild = from FrameworkElement child in children
+                    where child.Name == $"chk{index}"
+                    select child;
+                var check = foundChild.First();
+                var text = LogicalTreeHelper.GetChildren(check).OfType<TextBox>().First();
+                TaskList[index].Name = text.Text;
+                text.IsReadOnly = true;
+            }
             var btn = element as Button;
-            btn.Content = "Edit";
-            btn.IsDefault = false;
-            buttonAdd.IsDefault = true;
-            btn.Click -= Btn_Click;
+            if (btn != null)
+            {
+                btn.Content = "Edit";
+                btn.IsDefault = false;
+                ButtonAdd.IsDefault = true;
+                btn.Click -= Btn_Click;
+            }
             BuildList();
         }
 
         private void Check_Unchecked(object sender, RoutedEventArgs e)
         {
             var element = e.Source as FrameworkElement;
-            var index = Int32.Parse(element.Name.Substring(3));
-            TaskList[index].Finished = false;
+            if (element != null)
+            {
+                var index = Int32.Parse(element.Name.Substring(3));
+                TaskList[index].Finished = false;
+            }
             BuildList();
         }
 
         private void Check_Checked(object sender, RoutedEventArgs e)
         {
             var element = e.Source as FrameworkElement;
-            var index = Int32.Parse(element.Name.Substring(3));
-            TaskList[index].Finished = true;
+            if (element != null)
+            {
+                var index = Int32.Parse(element.Name.Substring(3));
+                TaskList[index].Finished = true;
+            }
             BuildList();
         }
         
@@ -263,10 +290,10 @@ namespace todolist
                 {
                     FileStream fs = File.Create(listFile);
                     fs.Close();
-                    xTaskList = new XDocument();
-                    xTasks=new XElement("Tasks");
-                    xTaskList.Add(xTasks);
-                    xTaskList.Save(listFile);
+                    _xTaskList = new XDocument();
+                    _xTasks=new XElement("Tasks");
+                    _xTaskList.Add(_xTasks);
+                    _xTaskList.Save(listFile);
                 }
                 catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
@@ -279,14 +306,21 @@ namespace todolist
             TaskList = new List<TodoItem>();
             try
             {
-                xTaskList = XDocument.Load(listFile);
-                xTasks = xTaskList.Root;
-                foreach (XElement element in xTaskList.Element("Tasks").Elements("item"))
-                {
-                    Debug.Assert(element != null, "element != null");
-                    TodoItem item = new TodoItem(element.Element("text").Value, bool.Parse(element.Element("finished").Value));
-                    TaskList.Add(item);
-                }
+                _xTaskList = XDocument.Load(_listFile);
+                _xTasks = _xTaskList.Root;
+                var xElement = _xTaskList.Element("Tasks");
+                if (xElement != null)
+                    foreach (XElement element in xElement.Elements("item"))
+                    {
+                        Debug.Assert(element != null, "element != null");
+                        var o = element.Element("text");
+                        if (o != null)
+                        {
+                            var xElement1 = element.Element("finished");
+                            TodoItem item = new TodoItem(o.Value, xElement1 != null && bool.Parse(xElement1.Value));
+                            TaskList.Add(item);
+                        }
+                    }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message);}
             BuildList();
@@ -302,11 +336,10 @@ namespace todolist
         /// </returns>
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
-            this.buttonAdd.IsEnabled = true;
-            textBox.IsEnabled = true;
-            //ButtonRemoveDone.IsEnabled = true;
+            this.ButtonAdd.IsEnabled = true;
+            TextBox.IsEnabled = true;
             GetSolution();
-            if (File.Exists(listFile))
+            if (File.Exists(_listFile))
                 OpenTaskListFromFile();
             return VSConstants.S_OK;
         }
@@ -320,10 +353,10 @@ namespace todolist
         /// </returns>
         public int OnAfterCloseSolution(object pUnkReserved)
         {
-            buttonAdd.IsEnabled = false;
-            textBox.IsEnabled = false;
+            ButtonAdd.IsEnabled = false;
+            TextBox.IsEnabled = false;
             ButtonRemoveDone.IsEnabled = false;
-            this.listBox.Items.Clear();
+            this.ListBox.Items.Clear();
             TaskList.Clear();
             ProgressBar.Value = 0;
             ProgressText.Text = "Add tasks via \"Add\" button";
@@ -373,16 +406,20 @@ namespace todolist
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (textBox.Text == "")
+            if (TextBox.Text == "")
             {
-                ImageBrush textImageBrush = new ImageBrush();
-                textImageBrush.ImageSource = new BitmapImage(new Uri(@"pack://application:,,,/todolist;component/Resources/faketext.gif", UriKind.RelativeOrAbsolute));
-                textImageBrush.AlignmentX = AlignmentX.Left;
-                textImageBrush.Stretch = Stretch.None;
-                textBox.Background = textImageBrush;
+                ImageBrush textImageBrush = new ImageBrush
+                {
+                    ImageSource =
+                        new BitmapImage(new Uri(@"pack://application:,,,/todolist;component/Resources/faketext.gif",
+                            UriKind.RelativeOrAbsolute)),
+                    AlignmentX = AlignmentX.Left,
+                    Stretch = Stretch.None
+                };
+                TextBox.Background = textImageBrush;
             }
             else
-                textBox.Background = new SolidColorBrush(Color.FromRgb(128,128,128));
+                TextBox.Background = new SolidColorBrush(Color.FromRgb(128,128,128));
         }
 
         private void ButtonRemoveDone_OnClick(object sender, RoutedEventArgs e)
@@ -405,13 +442,13 @@ namespace todolist
         {
             Canvas.Width = ActualWidth - 20;
             //Canvas.Height = Math.Max(10, Math.Min(48, ActualHeight - 24));
-            listBox.Width = Canvas.Width;
-            if (listFile!=null)
+            ListBox.Width = Canvas.Width;
+            if (_listFile!=null)
                 BuildList();
-            textBox.Width = ActualWidth - 80;
+            TextBox.Width = ActualWidth - 80;
             ProgressBar.Width = ActualWidth - 109;
             ProgressText.Width = ActualWidth - 109;
-            wat.Width = ActualWidth - 20;
+            Wat.Width = ActualWidth - 20;
         }
     }
 }

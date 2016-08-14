@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:platformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0">
+                    xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0">
 
     <!--Control colors.-->
     <Color x:Key="WindowColor">#FFE8EDF9</Color>
@@ -91,7 +91,7 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.MainWindowButtonHoverActiveBrushKey}}"/>
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.MainWindowButtonHoverActiveBrushKey}}"/>
                                 <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
@@ -103,8 +103,8 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Background" TargetName="border" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowButtonInactiveBrushKey}}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowButtonInactiveBrushKey}}"/>
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ToolWindowButtonInactiveBrushKey}}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ToolWindowButtonInactiveBrushKey}}"/>
                                 <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -122,14 +122,14 @@
         </Style.Triggers>-->
     </Style>
     <Style TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
     </Style>
     <Style x:Key="TxtStyle" TargetType="{x:Type TextBox}">
         <Style.Setters>
-            <Setter Property="Background" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static platformUI:EnvironmentColors.SystemButtonTextBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
@@ -145,11 +145,11 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="BorderBrush" TargetName="border"
-                                        Value="{DynamicResource {x:Static platformUI:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}" />
+                                        Value="{DynamicResource {x:Static platformUi:EnvironmentColors.EnvironmentBackgroundTexture1BrushKey}}" />
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="true">
                                 <Setter Property="BorderBrush" TargetName="border"
-                                        Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ComboBoxFocusedBorderBrushKey}}" />
+                                        Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ComboBoxFocusedBorderBrushKey}}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -181,10 +181,10 @@
                                         <LinearGradientBrush.GradientStops>
                                             <GradientStopCollection>
                                                 <GradientStop
-                                                    Color="{DynamicResource {x:Static platformUI:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}"
+                                                    Color="{DynamicResource {x:Static platformUi:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}"
                                                     Offset="0.0" />
                                                 <GradientStop
-                                                    Color="{DynamicResource {x:Static platformUI:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}"
+                                                    Color="{DynamicResource {x:Static platformUi:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}"
                                                     Offset="1.0" />
                                             </GradientStopCollection>
                                         </LinearGradientBrush.GradientStops>
@@ -196,9 +196,9 @@
                                         <LinearGradientBrush.GradientStops>
                                             <GradientStopCollection>
                                                 <GradientStop
-                                                    Color="{DynamicResource {x:Static platformUI:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}" />
+                                                    Color="{DynamicResource {x:Static platformUi:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}" />
                                                 <GradientStop
-                                                    Color="{DynamicResource {x:Static platformUI:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}"
+                                                    Color="{DynamicResource {x:Static platformUi:EnvironmentColors.CommandBarCheckBoxDisabledColorKey}}"
                                                     Offset="1.0" />
                                             </GradientStopCollection>
                                         </LinearGradientBrush.GradientStops>
@@ -229,7 +229,7 @@
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                       Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
                                             <EasingColorKeyFrame KeyTime="0"
-                                                                 Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ScrollBarThumbGlyphMouseOverBorderColorKey}}" />
+                                                                 Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ScrollBarThumbGlyphMouseOverBorderColorKey}}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -238,7 +238,7 @@
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                       Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
                                             <EasingColorKeyFrame KeyTime="0"
-                                                                 Value="{DynamicResource {x:Static platformUI:EnvironmentColors.ScrollBarThumbGlyphMouseOverBorderColorKey}}" />
+                                                                 Value="{DynamicResource {x:Static platformUi:EnvironmentColors.ScrollBarThumbGlyphMouseOverBorderColorKey}}" />
                                         </ColorAnimationUsingKeyFrames>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                       Storyboard.TargetProperty="(Border.BorderBrush).

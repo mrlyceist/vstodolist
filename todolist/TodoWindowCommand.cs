@@ -30,7 +30,7 @@ namespace todolist
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
-        private readonly Package package;
+        private readonly Package _package;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TodoWindowCommand"/> class.
@@ -44,13 +44,13 @@ namespace todolist
                 throw new ArgumentNullException("package");
             }
 
-            this.package = package;
+            this._package = package;
 
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
-                var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.ShowToolWindow, menuCommandID);
+                var menuCommandId = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.ShowToolWindow, menuCommandId);
                 commandService.AddCommand(menuItem);
             }
         }
@@ -71,7 +71,7 @@ namespace todolist
         {
             get
             {
-                return this.package;
+                return this._package;
             }
         }
 
@@ -94,7 +94,7 @@ namespace todolist
             // Get the instance number 0 of this tool window. This window is single instance so this instance
             // is actually the only one.
             // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = this.package.FindToolWindow(typeof(TodoWindow), 0, true);
+            ToolWindowPane window = this._package.FindToolWindow(typeof(TodoWindow), 0, true);
             if ((null == window) || (null == window.Frame))
             {
                 throw new NotSupportedException("Cannot create tool window");

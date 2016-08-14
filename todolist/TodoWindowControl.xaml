@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:platformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
+             xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
              Background="{DynamicResource VsBrush.Window}"
              Foreground="{DynamicResource VsBrush.WindowText}"
              SizeChanged="TodoWindowControl_OnSizeChanged"
@@ -17,22 +17,22 @@
     </UserControl.Resources>
     <Grid>
         <Canvas x:Name="Canvas" MinWidth="150">
-            <Grid x:Name="wat" Height="23" Canvas.Left="10" Canvas.Top="10" Width="280">
+            <Grid x:Name="Wat" Height="23" Canvas.Left="10" Canvas.Top="10" Width="280">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto" MinWidth="4"/>
                     <ColumnDefinition Width="Auto" MinWidth="48"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="textBox" Height="23" HorizontalAlignment="Left" TextChanged="TextBox_OnTextChanged" Grid.Column="0" VerticalContentAlignment="Center" MaxLines="1" Margin="2,0" >
+                <TextBox x:Name="TextBox" Height="23" HorizontalAlignment="Left" TextChanged="TextBox_OnTextChanged" Grid.Column="0" VerticalContentAlignment="Center" MaxLines="1" Margin="2,0" >
                     <TextBox.Background>
                         <ImageBrush ImageSource="pack://application:,,,/todolist;component/Resources/faketext.gif" AlignmentX="Left" Stretch="None"/>
                     </TextBox.Background>
                 </TextBox>
-                <Button x:Name="buttonAdd" Content="Add" Width="48" Click="buttonAdd_Click" IsDefault="True" Grid.Column="2" Height="23" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUI:EnvironmentColors.SystemButtonTextBrushKey}}" RenderTransformOrigin="-1.089,3.335" HorizontalAlignment="Left"/>
+                <Button x:Name="ButtonAdd" Content="Add" Width="48" Click="buttonAdd_Click" IsDefault="True" Grid.Column="2" Height="23" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}" RenderTransformOrigin="-1.089,3.335" HorizontalAlignment="Left"/>
             </Grid>
-            <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="280" Canvas.Left="10" Canvas.Top="38"/>
-            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUI:EnvironmentColors.SystemButtonTextBrushKey}}"/>
-            <ProgressBar x:Name="ProgressBar" Height="20" Width="198" HorizontalAlignment="Stretch" Canvas.Left="92" Canvas.Top="265" Background="{DynamicResource {x:Static platformUI:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
+            <ListBox x:Name="ListBox" HorizontalAlignment="Left" Height="222" VerticalAlignment="Top" Width="280" Canvas.Left="10" Canvas.Top="38"/>
+            <Button x:Name="ButtonRemoveDone" Content="Remove done" Click="ButtonRemoveDone_OnClick" Canvas.Left="10" Canvas.Top="265" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}"/>
+            <ProgressBar x:Name="ProgressBar" Height="20" Width="198" HorizontalAlignment="Stretch" Canvas.Left="92" Canvas.Top="265" Background="{DynamicResource {x:Static platformUi:EnvironmentColors.ToolWindowBackgroundBrushKey}}"/>
             <TextBlock x:Name="ProgressText" TextAlignment="Center" Canvas.Left="92" Canvas.Top="267" Width="198" HorizontalAlignment="Stretch">Add tasks via "Add" button</TextBlock>
         </Canvas>
     </Grid>
