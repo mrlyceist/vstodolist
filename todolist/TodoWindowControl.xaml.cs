@@ -115,7 +115,6 @@ namespace todolist
         {
             var done = TaskList.Count(item => item.Finished);
             ListBox.Items.Clear();
-            // TODO: HERE GOES THE PROBLEM!
             if (_xTaskList == null) return;
             {
                 _xTaskList.Root?.RemoveAll();
@@ -209,7 +208,6 @@ namespace todolist
         private void EditItem(object sender, RoutedEventArgs e)
         {
             var element = e.Source as FrameworkElement;
-            // TODO: possible null
             var index = Int32.Parse(element.Name.Substring(3));
             var parent = LogicalTreeHelper.GetChildren(element.Parent);
             var children = parent.OfType<FrameworkElement>().ToList();
@@ -233,7 +231,6 @@ namespace todolist
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: possible null
             // TODO: Move out common code.
             var element = e.Source as FrameworkElement;
             if (element != null)
