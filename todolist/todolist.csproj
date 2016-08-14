@@ -85,16 +85,16 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Resources\faketext.gif" />
-    <Resource Include="Resources\checkMark2.gif" />
     <Resource Include="Resources\checkMark.gif" />
     <Content Include="Resources\Preview.PNG">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\TodoWindowCommand.png" />
+    <Content Include="Resources\TodoWindowCommand.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\TodoWindowPackage.ico">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="stylesheet.css" />
     <VSCTCompile Include="TodoWindowPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>

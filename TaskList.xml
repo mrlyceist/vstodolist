@@ -34,6 +34,10 @@
   </item>
   <item>
     <text>Файлик создается всегда, а надо только при добавлении таска!</text>
+    <finished>true</finished>
+  </item>
+  <item>
+    <text>Если список пустой, в билдлист оставить предложение загнать</text>
     <finished>false</finished>
   </item>
 </Tasks>

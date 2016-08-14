@@ -49,7 +49,7 @@ namespace todolist
         /// <summary>
         /// TodoWindowPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "9f783d75-bd2f-480a-b9d1-2105d99b0e09";
+        public const string PackageGuidString = "81EBD76A-FE2A-4AD6-930F-4B79B271A798";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TodoWindow"/> class.

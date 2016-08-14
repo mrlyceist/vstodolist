@@ -64,7 +64,7 @@
 
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidTodoWindowPackage" value="{9f783d75-bd2f-480a-b9d1-2105d99b0e09}" />
+    <GuidSymbol name="guidTodoWindowPackage" value="{81EBD76A-FE2A-4AD6-930F-4B79B271A798}" />
 
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidTodoWindowPackageCmdSet" value="{962cc4e0-4728-4034-86c1-9a4b152f674d}">
