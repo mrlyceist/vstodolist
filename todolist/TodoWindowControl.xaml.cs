@@ -199,7 +199,7 @@ namespace todolist
             btnEdit.SetResourceReference(ForegroundProperty, Microsoft.VisualStudio.PlatformUI.EnvironmentColors.SystemButtonTextBrushKey);
             grid.Children.Add(btnEdit);
             btnEdit.Name = $"bed{ListBox.Items.Count}";
-            btnEdit.Click += new RoutedEventHandler(EditItem);
+            btnEdit.Click += EditItem;
             Grid.SetColumn(grid.Children[2], 2);
 
             ListBox.Items.Add(grid);
@@ -311,12 +311,10 @@ namespace todolist
                     {
                         Debug.Assert(element != null, "element != null");
                         var o = element.Element("text");
-                        if (o != null)
-                        {
-                            var xElement1 = element.Element("finished");
-                            TodoItem item = new TodoItem(o.Value, xElement1 != null && bool.Parse(xElement1.Value));
-                            TaskList.Add(item);
-                        }
+                        if (o == null) continue;
+                        var xElement1 = element.Element("finished");
+                        TodoItem item = new TodoItem(o.Value, xElement1 != null && bool.Parse(xElement1.Value));
+                        TaskList.Add(item);
                     }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message);}
@@ -421,7 +419,7 @@ namespace todolist
 
         private void ButtonRemoveDone_OnClick(object sender, RoutedEventArgs e)
         {
-            TaskList.RemoveAll(item => item.Finished == true);
+            TaskList.RemoveAll(item => item.Finished);
             BuildList();
         }
 

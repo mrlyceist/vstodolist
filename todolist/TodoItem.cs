@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace todolist
 {
