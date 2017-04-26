@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace todolist
 {
-    internal class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
         private readonly Func<object, bool> _canExecute;
         private readonly Action<object> _execute;
