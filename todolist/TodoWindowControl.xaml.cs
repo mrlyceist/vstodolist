@@ -94,7 +94,7 @@ namespace todolist
         private void AddItemToFile(TodoItem item)
         {
             XElement xItem = new XElement("item");
-            XElement xText = new XElement("text", item.Name);
+            XElement xText = new XElement("text", item.Text);
             XElement xDone = new XElement("finished", item.Finished.ToString().ToLower());
             xItem.Add(xText, xDone);
             _xTasks.Add(xItem);
@@ -156,7 +156,7 @@ namespace todolist
                 Height = 20,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                ToolTip = item.Name,
+                ToolTip = item.Text,
                 Style = Resources["TxtStyle"] as Style,
                 IsReadOnly = true
             };
@@ -243,7 +243,7 @@ namespace todolist
                     select child;
                 var check = foundChild.First();
                 var text = LogicalTreeHelper.GetChildren(check).OfType<TextBox>().First();
-                TaskList[index].Name = text.Text;
+                TaskList[index].Text = text.Text;
                 text.IsReadOnly = true;
             }
             var btn = element as Button;

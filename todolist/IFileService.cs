@@ -1,6 +1,6 @@
 ﻿namespace todolist
 {
-    internal interface IFileService
+    public interface IFileService
     {
     }
 }
