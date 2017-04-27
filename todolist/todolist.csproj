@@ -72,6 +72,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Tasks.cs" />
     <Compile Include="TodoItem.cs" />
     <Compile Include="TodoWindow.cs" />
     <Compile Include="TodoWindowCommand.cs" />
