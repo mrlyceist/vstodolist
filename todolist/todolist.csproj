@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Converters\BoolToDecorationConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\ShrinkConverter.cs" />
     <Compile Include="EventFocusAttachment.cs" />
     <Compile Include="IFileService.cs" />

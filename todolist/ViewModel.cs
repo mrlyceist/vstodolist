@@ -11,8 +11,7 @@ namespace todolist
     public class ViewModel : INotifyPropertyChanged
     {
         private readonly IFileService _fileService;
-        private readonly string _fileName;
-        
+
         private RelayCommand _addCommand;
         private RelayCommand _openCommand;
         private RelayCommand _removeDoneCommand;
@@ -31,14 +30,20 @@ namespace todolist
                 return _addCommand ??
                        (_addCommand = new RelayCommand(obj =>
                        {
-                           if (string.IsNullOrWhiteSpace(NewItemText)) return;
-                           TodoItem item = new TodoItem(NewItemText);
-                           TaskList.Add(item);
-                           NewItemText = string.Empty;
-                           Item_PropertyChanged(null, null);
-                       }));
+                           AddToList();
+                       }, obj => !string.IsNullOrWhiteSpace(_newItemText)));
             }
         }
+
+        private void AddToList()
+        {
+            if (string.IsNullOrWhiteSpace(_newItemText)) return;
+            TodoItem item = new TodoItem(_newItemText);
+            TaskList.Add(item);
+            _newItemText = string.Empty;
+            Item_PropertyChanged(null, null);
+        }
+
         /// <summary>
         /// Binding command for opening tasklist from file
         /// </summary>
@@ -47,20 +52,13 @@ namespace todolist
             get
             {
                 return _openCommand ??
-                  (_openCommand = new RelayCommand(obj =>
-                  {
-                      try
-                      {
-                          var items = _fileService.Open(_fileName);
-                          _taskList.Clear();
-                          foreach (TodoItem item in items)
-                              _taskList.Add(item);
-                          Item_PropertyChanged(null, null);
-                      }
-                      catch (Exception ex) { MessageBox.Show(ex.Message); }
-                  }));
+                       (_openCommand = new RelayCommand(obj =>
+                       {
+                           OpenListFromFile();
+                       }));
             }
         }
+
         /// <summary>
         /// Binding command to remove all done tasks from tasklist
         /// </summary>
@@ -69,14 +67,14 @@ namespace todolist
             get
             {
                 return _removeDoneCommand ??
-                  (_removeDoneCommand = new RelayCommand(obj =>
-                  {
-                      var list = _taskList.Where(i => !i.Finished).ToList();
-                      _taskList.Clear();
-                      foreach (TodoItem item in list)
-                          _taskList.Add(item);
-                      Item_PropertyChanged(null, null);
-                  }));
+                       (_removeDoneCommand = new RelayCommand(obj =>
+                       {
+                           var list = _taskList.Where(i => !i.Finished).ToList();
+                           _taskList.Clear();
+                           foreach (TodoItem item in list)
+                               _taskList.Add(item);
+                           Item_PropertyChanged(null, null);
+                       }, obj => _taskList.Any(i => i.Finished)));
             }
         }
         #endregion
@@ -98,13 +96,13 @@ namespace todolist
         /// <summary>
         /// text of new item to be added to tasklist
         /// </summary>
-        public string NewItemText
+        public string NewItem
         {
             get => _newItemText;
             set
             {
                 _newItemText = value; 
-                OnPropertyChanged(nameof(NewItemText));
+                OnPropertyChanged(nameof(NewItem));
             }
         }
 
@@ -148,6 +146,9 @@ namespace todolist
                 OnPropertyChanged(nameof(ProgressText));
             }
         }
+
+        public string FileName { get; set; }
+
         #endregion
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace todolist
         /// <param name="fileService">Serializer implementation</param>
         public ViewModel(string fileName, IFileService fileService)
         {
-            _fileName = fileName;
+            FileName = fileName;
             _fileService = fileService;
 
             _taskList = new ObservableCollection<TodoItem>();
@@ -178,13 +179,33 @@ namespace todolist
         }
 
         /// <summary>
+        /// Opens file with tasklist
+        /// </summary>
+        public void OpenListFromFile()
+        {
+            if (string.IsNullOrWhiteSpace(FileName)) return;
+            try
+            {
+                var items = _fileService.Open(FileName);
+                _taskList.Clear();
+                foreach (TodoItem item in items)
+                    _taskList.Add(item);
+                Item_PropertyChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Serializes <see cref="TaskList"/> and saves it to file
         /// </summary>
         private void SaveFile()
         {
             try
             {
-                _fileService.Save(_fileName, _taskList.ToList());
+                _fileService.Save(FileName, _taskList.ToList());
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }

@@ -26,8 +26,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="NewTextBox" Grid.Column="0" Width="Auto" Text="{Binding NewItemName}"/>
-            <Button Grid.Column="1" Command="{Binding AddCommand}" IsDefault="True">Add</Button>
+            <TextBox x:Name="NewTextBox" Grid.Column="0" Width="Auto" Text="{Binding NewItem}"/>
+            <Button x:Name="AddButton" Grid.Column="1" Command="{Binding AddCommand}" IsDefault="True">Add</Button>
         </Grid>
         <ListBox x:Name="ListBox" Grid.Row="1" ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Visibility="{Binding Path=IsEmpty, Converter={converters:BoolToVisibilityConverter}, ConverterParameter='true'}">
             <ListBox.ItemTemplate>
@@ -40,9 +40,9 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <Button Content="X" Click="ButtonBase_OnClick" Grid.Column="0"></Button>
-                        <CheckBox x:Name="CheckBox" IsChecked="{Binding Path=Finished}" Grid.Column="1"/>
-                        <TextBox x:Name="TextBox" IsEnabled="{Binding IsChecked, ElementName=Button}" Text="{Binding Path=Text}" GotFocus="TextBox_OnGotFocus" ToolTip="{Binding Path=Text}" TextDecorations="{Binding ElementName=CheckBox, Path=IsChecked, Converter={converters:BoolToDecorationConverter}}" Grid.Column="2" HorizontalAlignment="Stretch" KeyDown="UIElement_OnKeyDown"/>
-                        <ToggleButton x:Name="Button" Grid.Column="3" local:EventFocusAttachment.ElementToFocus="{Binding ElementName=TextBox}">
+                        <CheckBox x:Name="DoneCheckBox" IsChecked="{Binding Path=Finished}" Grid.Column="1"/>
+                        <TextBox x:Name="EditTextBox" IsEnabled="{Binding IsChecked, ElementName=EditButton}" Text="{Binding Path=Text}" GotFocus="TextBox_OnGotFocus" ToolTip="{Binding Path=Text}" TextDecorations="{Binding ElementName=DoneCheckBox, Path=IsChecked, Converter={converters:BoolToDecorationConverter}}" Grid.Column="2" HorizontalAlignment="Stretch" KeyDown="UIElement_OnKeyDown"/>
+                        <ToggleButton x:Name="EditButton" Grid.Column="3" local:EventFocusAttachment.ElementToFocus="{Binding ElementName=EditTextBox}">
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton">
                                     <Setter Property="Content" Value="Edit"/>

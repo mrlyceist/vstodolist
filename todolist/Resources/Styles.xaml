@@ -87,9 +87,9 @@
                             <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="Button.IsDefaulted" Value="True">
+                            <!--<Trigger Property="Button.IsDefaulted" Value="True">
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
+                            </Trigger>-->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" TargetName="border" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.MainWindowButtonHoverActiveBrushKey}}"/>
                                 <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>

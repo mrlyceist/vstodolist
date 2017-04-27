@@ -31,8 +31,9 @@ namespace todolist
     {
         private Solution _solution;
         private string _listFile;
-        private XDocument _xTaskList;
-        private XElement _xTasks;
+        private ViewModel _model;
+        //private XDocument _xTaskList;
+        //private XElement _xTasks;
 
         public List<TodoItem> TaskList = new List<TodoItem>();
 
@@ -44,16 +45,20 @@ namespace todolist
             this.InitializeComponent();
             MinWidth = 150;
 
-            uint cookie = 0;
-            TodoWindowPackage.TheSolution.AdviseSolutionEvents(this, out cookie);
+            TodoWindowPackage.TheSolution.AdviseSolutionEvents(this, out uint cookie);
             GetSolution();
             DataContext = new ViewModel(_listFile, new XmlFileService());
+            _model = (ViewModel) DataContext;
+            if (File.Exists(_listFile))
+            {
+                _model.FileName = _listFile;
+                _model.OpenListFromFile();
+            }
         }
 
         private void GetSolution()
         {
-            DTE2 dte = Package.GetGlobalService(typeof (SDTE)) as DTE2;
-            if (dte != null) _solution = dte.Solution;
+            if (Package.GetGlobalService(typeof(SDTE)) is DTE2 dte) _solution = dte.Solution;
             if (_solution.FullName != string.Empty)
             {
                 string solutionDir = System.IO.Path.GetDirectoryName(_solution.FullName);
@@ -335,8 +340,11 @@ namespace todolist
             //this.ButtonAdd.IsEnabled = true;
             //TextBox.IsEnabled = true;
             GetSolution();
-            //if (File.Exists(_listFile))
-                //OpenTaskListFromFile();
+            if (File.Exists(_listFile))
+            {
+                _model.FileName = _listFile;
+                _model.OpenListFromFile();
+            }
             return VSConstants.S_OK;
         }
 
@@ -356,6 +364,7 @@ namespace todolist
             //TaskList.Clear();
             //ProgressBar.Value = 0;
             //ProgressText.Text = "Add tasks via \"Add\" button";
+            _model.FileName = string.Empty;
             return VSConstants.S_OK;
         }
 
@@ -463,14 +472,14 @@ namespace todolist
 
         private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Enter || e.Key != Key.Escape) return;
+            if (e.Key != Key.Enter && e.Key != Key.Escape) return;
             var element = (FrameworkElement)e.Source;
             var tBox = element as TextBox;
             var tmpTxt = tBox.Text;
             var children = LogicalTreeHelper
                     .GetChildren(element.Parent)
                     .OfType<FrameworkElement>()
-                    .FirstOrDefault(i => i.Name == "Button")
+                    .FirstOrDefault(i => i.Name == "EditButton")
                 as ToggleButton;
             if (children == null) return;
             children.IsChecked = false;

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace todolist
 {
     [XmlRoot("Tasks")]
-    internal class Tasks
+    public class Tasks
     {
         [XmlElement("item")]
         public List<TodoItem> Items { get; set; }
