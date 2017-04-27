@@ -1,9 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Tasks>
-  <item>
-    <text>При отсутствии списка задач показывать надпись "создайте" (в BuildList?)</text>
-    <finished>false</finished>
-  </item>
+<?xml version="1.0"?>
+<Tasks xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <item>
     <text>Реакция на перезапуск студии</text>
     <finished>false</finished>
@@ -17,15 +13,7 @@
     <finished>false</finished>
   </item>
   <item>
-    <text>автовысота листбокса</text>
-    <finished>false</finished>
-  </item>
-  <item>
     <text>ловить тему студии, менять подсказку</text>
-    <finished>false</finished>
-  </item>
-  <item>
-    <text>отслеживать слайдер</text>
     <finished>false</finished>
   </item>
   <item>
@@ -33,11 +21,15 @@
     <finished>false</finished>
   </item>
   <item>
-    <text>Файлик создается всегда, а надо только при добавлении таска!</text>
-    <finished>true</finished>
+    <text>Если список пустой, в билдлист оставить предложение загнать</text>
+    <finished>false</finished>
   </item>
   <item>
-    <text>Если список пустой, в билдлист оставить предложение загнать</text>
+    <text>Colors!</text>
+    <finished>false</finished>
+  </item>
+  <item>
+    <text>Styles to separate file (or files?)</text>
     <finished>false</finished>
   </item>
 </Tasks>
