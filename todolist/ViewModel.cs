@@ -55,7 +55,7 @@ namespace todolist
                        (_openCommand = new RelayCommand(obj =>
                        {
                            OpenListFromFile();
-                       }));
+                       }, obj => !string.IsNullOrWhiteSpace(FileName)));
             }
         }
 

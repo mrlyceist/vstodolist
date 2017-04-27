@@ -409,23 +409,23 @@ namespace todolist
         }
         #endregion
 
-        private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            //if (TextBox.Text == "")
-            {
-                ImageBrush textImageBrush = new ImageBrush
-                {
-                    ImageSource =
-                        new BitmapImage(new Uri(@"pack://application:,,,/todolist;component/Resources/faketext.gif",
-                            UriKind.RelativeOrAbsolute)),
-                    AlignmentX = AlignmentX.Left,
-                    Stretch = Stretch.None
-                };
-                //TextBox.Background = textImageBrush;
-            }
-            //else
-                //TextBox.Background = new SolidColorBrush(Color.FromRgb(128,128,128));
-        }
+        //private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    //if (TextBox.Text == "")
+        //    {
+        //        ImageBrush textImageBrush = new ImageBrush
+        //        {
+        //            ImageSource =
+        //                new BitmapImage(new Uri(@"pack://application:,,,/todolist;component/Resources/faketext.gif",
+        //                    UriKind.RelativeOrAbsolute)),
+        //            AlignmentX = AlignmentX.Left,
+        //            Stretch = Stretch.None
+        //        };
+        //        //TextBox.Background = textImageBrush;
+        //    }
+        //    //else
+        //        //TextBox.Background = new SolidColorBrush(Color.FromRgb(128,128,128));
+        //}
 
         //private void ButtonRemoveDone_OnClick(object sender, RoutedEventArgs e)
         //{
@@ -493,6 +493,21 @@ namespace todolist
         private void NewTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             var txtBox = e.Source as TextBox;
+            if (txtBox == null) return;
+            if (string.IsNullOrWhiteSpace(txtBox.Text))
+            {
+                ImageBrush textImageBrush = new ImageBrush
+                {
+                    ImageSource =
+                            new BitmapImage(new Uri(@"pack://application:,,,/todolist;component/Resources/faketext.gif",
+                                UriKind.RelativeOrAbsolute)),
+                    AlignmentX = AlignmentX.Left,
+                    Stretch = Stretch.None
+                };
+                txtBox.Background = textImageBrush; 
+            }
+            else
+                txtBox.Background = new SolidColorBrush(Color.FromRgb(128, 128, 128));
             var txt = txtBox.Text;
             _model.NewItem = txt;
             e.Handled = true;

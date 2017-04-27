@@ -26,29 +26,35 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="NewTextBox" Grid.Column="0" Width="Auto" Text="{Binding NewItem}" TextChanged="NewTextBox_OnTextChanged"/>
-            <Button x:Name="AddButton" Grid.Column="1" Command="{Binding AddCommand}" IsDefault="True">Add</Button>
+            <TextBox x:Name="NewTextBox" Grid.Column="0" Width="Auto" Height="23" Text="{Binding NewItem}" TextChanged="NewTextBox_OnTextChanged" MaxLines="1" Margin="5,0" VerticalContentAlignment="Center">
+                <TextBox.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/todolist;component/Resources/faketext.gif" AlignmentX="Left" Stretch="None"/>
+                </TextBox.Background>
+            </TextBox>
+                <Button x:Name="AddButton" Grid.Column="1" Height="23" Margin="5,0" Command="{Binding AddCommand}" IsDefault="True" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}">Add</Button>
         </Grid>
-        <ListBox x:Name="ListBox" Grid.Row="1" ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Visibility="{Binding Path=IsEmpty, Converter={converters:BoolToVisibilityConverter}, ConverterParameter='true'}">
+        <ListBox x:Name="ListBox" Grid.Row="1" ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Visibility="{Binding Path=IsEmpty, Converter={converters:BoolToVisibilityConverter}, ConverterParameter='true'}" Margin="5,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Stretch" Width="{Binding Path=ActualWidth, ElementName=ListBox, Converter={converters:ShrinkConverter}, ConverterParameter='30'}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="20"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="X" Click="ButtonBase_OnClick" Grid.Column="0"></Button>
-                        <CheckBox x:Name="DoneCheckBox" IsChecked="{Binding Path=Finished}" Grid.Column="1"/>
+                        <Button Content="X" Click="ButtonBase_OnClick" Grid.Column="0" Style="{StaticResource BtnStyle}"/>
+                        <CheckBox x:Name="DoneCheckBox" IsChecked="{Binding Path=Finished}" Grid.Column="1" Style="{StaticResource CheckStyle}"/>
                         <TextBox x:Name="EditTextBox" IsEnabled="{Binding IsChecked, ElementName=EditButton}" Text="{Binding Path=Text}" GotFocus="TextBox_OnGotFocus" ToolTip="{Binding Path=Text}" TextDecorations="{Binding ElementName=DoneCheckBox, Path=IsChecked, Converter={converters:BoolToDecorationConverter}}" Grid.Column="2" HorizontalAlignment="Stretch" KeyDown="UIElement_OnKeyDown"/>
                         <ToggleButton x:Name="EditButton" Grid.Column="3" local:EventFocusAttachment.ElementToFocus="{Binding ElementName=EditTextBox}">
                             <ToggleButton.Style>
-                                <Style TargetType="ToggleButton">
+                                <Style TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonStyle}">
                                     <Setter Property="Content" Value="Edit"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsChecked" Value="True">
                                             <Setter Property="Content" Value="Done"/>
+                                            <!--<Setter Property="Background" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.FileTabButtonHoverSelectedActiveBorderBrushKey}}"/>-->
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -58,17 +64,17 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Grid.Row="1" Visibility="{Binding Path=IsEmpty, Converter={converters:BoolToVisibilityConverter}, ConverterParameter='false'}" Command="{Binding OpenCommand}">
+        <Button Grid.Row="1" Visibility="{Binding Path=IsEmpty, Converter={converters:BoolToVisibilityConverter}, ConverterParameter='false'}" Command="{Binding OpenCommand}" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}" Margin="5,0">
             <TextBlock>Refresh tasklist</TextBlock>
         </Button>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Command="{Binding RemoveDoneCommand}" Content="Remove done"/>
-            <ProgressBar Maximum="{Binding OveralTasks}" Value="{Binding DoneTasks}" Grid.Column="1"/>
-            <TextBlock Grid.Column="1" Text="{Binding ProgressText}"/>
+            <Button Grid.Column="0" Height="23" Command="{Binding RemoveDoneCommand}" Content="Remove done" Style="{StaticResource BtnStyle}" Foreground="{DynamicResource {x:Static platformUi:EnvironmentColors.SystemButtonTextBrushKey}}" Margin="5,0"/>
+            <ProgressBar Maximum="{Binding OveralTasks}" Value="{Binding DoneTasks}" Grid.Column="1" Height="23"  Background="{DynamicResource {x:Static platformUi:EnvironmentColors.ToolWindowBackgroundBrushKey}}" Margin="5,0"/>
+            <TextBlock Grid.Column="1" Text="{Binding ProgressText}" TextAlignment="Center" Height="23" Margin="5,0" VerticalAlignment="Center"/>
         </Grid>
     </Grid>
 </UserControl>
