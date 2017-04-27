@@ -59,6 +59,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToDecorationConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ShrinkConverter.cs" />
     <Compile Include="IFileService.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
