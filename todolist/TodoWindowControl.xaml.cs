@@ -489,5 +489,13 @@ namespace todolist
                 tBox.Text = tmpTxt;
             }
         }
+
+        private void NewTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var txtBox = e.Source as TextBox;
+            var txt = txtBox.Text;
+            _model.NewItem = txt;
+            e.Handled = true;
+        }
     }
 }

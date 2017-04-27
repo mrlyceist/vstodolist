@@ -40,7 +40,7 @@ namespace todolist
             if (string.IsNullOrWhiteSpace(_newItemText)) return;
             TodoItem item = new TodoItem(_newItemText);
             TaskList.Add(item);
-            _newItemText = string.Empty;
+            NewItem = string.Empty;
             Item_PropertyChanged(null, null);
         }
 

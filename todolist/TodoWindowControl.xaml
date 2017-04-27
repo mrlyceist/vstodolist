@@ -26,7 +26,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="NewTextBox" Grid.Column="0" Width="Auto" Text="{Binding NewItem}"/>
+            <TextBox x:Name="NewTextBox" Grid.Column="0" Width="Auto" Text="{Binding NewItem}" TextChanged="NewTextBox_OnTextChanged"/>
             <Button x:Name="AddButton" Grid.Column="1" Command="{Binding AddCommand}" IsDefault="True">Add</Button>
         </Grid>
         <ListBox x:Name="ListBox" Grid.Row="1" ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Visibility="{Binding Path=IsEmpty, Converter={converters:BoolToVisibilityConverter}, ConverterParameter='true'}">
